@@ -1,71 +1,20 @@
 package main
 
 import (
-	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"strings"
-)
 
-// Player represents player
-type Player struct {
-	Name   string
-	Points int
-}
+	socketio "github.com/googollee/go-socket.io"
+)
 
 // Rulebook represents all game rule
 type Rulebook struct {
+	Counter int
 	// [click_count]prize_points
-	prizes  map[int]int
-	players map[string]Player
-}
-
-// CreateRulebook ...
-func CreateRulebook() Rulebook {
-	rb := Rulebook{}
-	rb.prizes = make(map[int]int)
-	rb.players = make(map[string]Player)
-	rb.prizes[10] = 5
-	rb.prizes[100] = 40
-	rb.prizes[250] = 500
-	return rb
-}
-
-// CreatePlayer creates new player
-func CreatePlayer() Player {
-	// TODO: Maybe static int player_count, and add to it player name
-	p := Player{Points: 20, Name: "Default"}
-	return p
-}
-
-func parseIP(addr string) string {
-	arr := strings.Split(addr, " ")
-	return arr[len(arr)-1]
-}
-
-func dataHandle(w http.ResponseWriter, r *http.Request) {
-	// response := struct {
-	// 	Players []model.Player
-	// 	Games   []model.Game
-	// 	Message string
-	// }{
-	// 	players,
-	// 	games,
-	// 	msg,
-	// }
-	//s.templates["home.html"].ExecuteTemplate(w, "base", response)
-	resp := struct {
-		Player
-	}{
-		CreatePlayer(),
-	}
-	// 2020/01/25 12:01:52 10.12.5.12:50995
-	log.Printf("%v\n", r.RemoteAddr)
-	log.Println(parseIP(r.RemoteAddr))
-	w.Header().Set("Content-Type", "application/json")
-	json, _ := json.Marshal(resp)
-	w.Write(json)
+	// prizes  map[int]int
+	// players map[string]Player
 }
 
 func main() {
@@ -74,10 +23,43 @@ func main() {
 	if port == "" {
 		port = "3000"
 	}
+	server, err := socketio.NewServer(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	server.OnConnect("ws://0.0.0.0:3000", func(s socketio.Conn) error {
+		s.SetContext("")
+		fmt.Println("connected:", s.ID())
+		return nil
+	})
+	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
+		fmt.Println("notice:", msg)
+		s.Emit("reply", "have "+msg)
+	})
+	server.OnEvent("/chat", "msg", func(s socketio.Conn, msg string) string {
+		s.SetContext(msg)
+		return "recv " + msg
+	})
+	server.OnEvent("/", "bye", func(s socketio.Conn) string {
+		last := s.Context().(string)
+		s.Emit("bye", last)
+		s.Close()
+		return last
+	})
+	server.OnError("/", func(s socketio.Conn, e error) {
+		fmt.Println("meet error:", e)
+	})
+	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
+		fmt.Println("closed", reason)
+	})
+	go server.Serve()
+	defer server.Close()
 	fs := http.FileServer(http.Dir("./public"))
+	// http.HandleFunc("/inc", rb.handleInc)
+	// http.HandleFunc("/get", rb.handleGet)
+	// http.HandleFunc("/ws", rb.wsEndpoint)
 	http.Handle("/", fs)
-	http.HandleFunc("/data", dataHandle)
-	err := http.ListenAndServe("0.0.0.0:"+port, nil)
+	err = http.ListenAndServe("0.0.0.0:"+port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
