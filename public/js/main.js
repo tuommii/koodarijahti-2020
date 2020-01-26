@@ -4,6 +4,7 @@ const audio = document.getElementById('audio-click');
 
 const STARTING_POINTS = 20;
 
+// TODO: timeout for button, reset counter when >=
 var app = new Vue({
   el: '#app',
   data: {
