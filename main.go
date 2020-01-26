@@ -12,7 +12,7 @@ import (
 type Player struct {
 	Score      int `json:"score"`
 	ClicksLeft int `json:"clicksLeft"`
-	NextPrize  int `json:"nextPrize"`
+	NextPrize  int `json:"nextPrize,omitempty"`
 }
 
 // Prizes
