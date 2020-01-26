@@ -2,11 +2,13 @@
 
 const audio = document.getElementById('audio-click');
 
+const STARTING_POINTS = 20;
+
 var app = new Vue({
   el: '#app',
   data: {
     message: 'Hello Vue!',
-    clicksLeft: 0,
+    clicksLeft: STARTING_POINTS,
     score: 0,
     nextPrize: '?',
     fetched: false
@@ -22,7 +24,7 @@ var app = new Vue({
         console.log(data);
         this.clicksLeft = data.clicksLeft;
         this.score = data.score
-        if (this.fetched)
+        if (this.clicksLeft != STARTING_POINTS)
           this.nextPrize = data.nextPrize;
         this.fetched = true;
       });

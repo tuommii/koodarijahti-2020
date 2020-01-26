@@ -82,7 +82,7 @@ func (s *State) getState(w http.ResponseWriter, r *http.Request) {
 			NextPrize:  s.Players[ip].NextPrize,
 		}
 	} else {
-		p = &Player{Score: 0, ClicksLeft: 2000, NextPrize: s.NextPrize}
+		p = &Player{Score: 0, ClicksLeft: 20, NextPrize: s.NextPrize}
 		s.Players[ip] = p
 		s.Players[ip].NextPrize = s.NextPrize
 	}
