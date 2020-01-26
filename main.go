@@ -48,15 +48,20 @@ func (s *State) checkPrize(ip string) {
 	s.NextPrize = 10
 }
 
+// 10.63.255.131:20284
 // secod arr like [::1]:49046
 func parseIP(addr string) string {
 	arr := strings.Split(addr, ":")
+	str := arr[0]
 	// ip := strings.Split(arr[len(arr)-1], "]")
-	return arr[0]
+	return str
 }
 
 func (s *State) getState(w http.ResponseWriter, r *http.Request) {
 	var p *Player
+	fwd := r.Header.Get("fwd")
+	fwd2 := r.Header.Get("X-Forwarded-For")
+	log.Println("HEADER1:", fwd, fwd2)
 	ip := parseIP(r.RemoteAddr)
 	if _, ok := s.Players[ip]; ok {
 		// Player exist, take data form State
