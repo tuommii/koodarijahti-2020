@@ -29,7 +29,8 @@ var app = new Vue({
         this.fetched = true;
       });
     },
-    handleClick: function() {
+    handleClick: function(e) {
+      e.preventDefault();
       audio.currentTime = 0;
       audio.play();
       // TODO: Change this

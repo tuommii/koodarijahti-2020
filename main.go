@@ -23,7 +23,7 @@ type State struct {
 	Players map[string]*Player
 	// How many clicks to win next prize
 	NextPrize int
-	// production/development, maybe others envs later so type string
+	// production/development, maybe others also
 	Env string
 	// Port to listen
 	Port string
@@ -34,15 +34,17 @@ const (
 	PrizeBigClicks    = 500
 	PrizeMediumClicks = 100
 	PrizeSmallClicks  = 10
-
-	PrizeBig    = 250
-	PrizeMedium = 40
-	PrizeSmall  = 5
+	PrizeBig          = 250
+	PrizeMedium       = 40
+	PrizeSmall        = 5
 )
+
+// StartingPoints for player
+const StartingPoints = 20
 
 // Create new State
 func createState() *State {
-	state := &State{Clicks: 0, NextPrize: 10, Env: "dev"}
+	state := &State{Clicks: 0, NextPrize: PrizeSmallClicks, Env: "dev"}
 	state.Players = make(map[string]*Player)
 	state.Port = os.Getenv("PORT")
 	if state.Port == "" {
@@ -59,20 +61,28 @@ func createPlayer(score int, clicksLeft int, nextPrize int) *Player {
 	return p
 }
 
+// Get amount of prize
+func (s *State) getPrize() int {
+	if s.Clicks%PrizeBigClicks == 0 {
+		return PrizeBig
+	} else if s.Clicks%PrizeMediumClicks == 0 {
+		return PrizeMedium
+	} else if s.Clicks%PrizeSmallClicks == 0 {
+		// s.Players[ip].Score += PrizeSmall
+		return PrizeSmall
+	}
+	return 0
+}
+
 // Check if prize is won, and adds prize's score to player identified by ip
+// Only every 10:nth (smallest count for prize) need's to be checked
 func (s *State) checkPrize(ip string) {
 	if s.NextPrize > 1 {
 		s.NextPrize--
 		return
 	}
-	if s.Clicks%PrizeBigClicks == 0 {
-		s.Players[ip].Score += PrizeBig
-	} else if s.Clicks%PrizeMediumClicks == 0 {
-		s.Players[ip].Score += PrizeMedium
-	} else if s.Clicks%PrizeSmallClicks == 0 {
-		s.Players[ip].Score += PrizeSmall
-	}
-	s.NextPrize = 10
+	s.Players[ip].Score += s.getPrize()
+	s.NextPrize = PrizeSmallClicks
 }
 
 // Set headers according to ENV
@@ -109,7 +119,7 @@ func (s *State) getState(w http.ResponseWriter, r *http.Request) {
 		p = createPlayer(s.Players[ip].Score, s.Players[ip].ClicksLeft, s.Players[ip].NextPrize)
 	} else {
 		// Add new player
-		p = createPlayer(0, 20, s.NextPrize)
+		p = createPlayer(0, StartingPoints, s.NextPrize)
 		s.Players[ip] = p
 	}
 	log.Println("/STATE:", s.Players[ip], ip)
