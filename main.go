@@ -54,6 +54,11 @@ func createState() *State {
 	return state
 }
 
+func createPlayer(score int, clicksLeft int, nextPrize int) *Player {
+	p := &Player{Score: score, ClicksLeft: clicksLeft, NextPrize: nextPrize}
+	return p
+}
+
 // Check if prize is won, and adds prize's score to player identified by ip
 func (s *State) checkPrize(ip string) {
 	if s.NextPrize > 1 {
@@ -101,16 +106,11 @@ func (s *State) getState(w http.ResponseWriter, r *http.Request) {
 	ip := s.getIP(w, r)
 	if _, ok := s.Players[ip]; ok {
 		// Player exist, copy data from State
-		p = &Player{
-			Score:      s.Players[ip].Score,
-			ClicksLeft: s.Players[ip].ClicksLeft,
-			NextPrize:  s.Players[ip].NextPrize,
-		}
+		p = createPlayer(s.Players[ip].Score, s.Players[ip].ClicksLeft, s.Players[ip].NextPrize)
 	} else {
 		// Add new player
-		p = &Player{Score: 0, ClicksLeft: 20, NextPrize: s.NextPrize}
+		p = createPlayer(0, 20, s.NextPrize)
 		s.Players[ip] = p
-		s.Players[ip].NextPrize = s.NextPrize
 	}
 	log.Println("/STATE:", s.Players[ip], ip)
 	json.NewEncoder(w).Encode(s.Players[ip])
@@ -132,11 +132,6 @@ func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.update(ip)
-	// s.Clicks++
-	// s.Players[ip].ClicksLeft--
-	// s.checkPrize(ip)
-	// s.Players[ip].NextPrize = s.NextPrize
-
 	log.Println("/ACTION:", s.Players[ip], ip)
 	json.NewEncoder(w).Encode(s.Players[ip])
 }
