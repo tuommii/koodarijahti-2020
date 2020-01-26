@@ -23,7 +23,7 @@ input.button, .button {
 }
 
 .column span {
-	font-size: 3rem;
+	font-size: 1rem;
 }
 
 input[type="button"]:active {

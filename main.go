@@ -59,7 +59,7 @@ func (s *State) getState(w http.ResponseWriter, r *http.Request) {
 	var p *Player
 	ip := parseIP(r.RemoteAddr)
 	if _, ok := s.Players[ip]; ok {
-		// Player exist
+		// Player exist, take data form State
 		p = &Player{
 			Score:      s.Players[ip].Score,
 			ClicksLeft: s.Players[ip].ClicksLeft,
@@ -80,7 +80,7 @@ func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
 	ip := parseIP(r.RemoteAddr)
 
 	if s.Players[ip].ClicksLeft == 0 {
-		json.NewEncoder(w).Encode(s.Players)
+		json.NewEncoder(w).Encode(s.Players[ip])
 		return
 	}
 
