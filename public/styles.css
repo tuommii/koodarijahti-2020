@@ -1,0 +1,37 @@
+
+
+body {
+	color: #f1f2f3;
+	background: #271b68;
+	background: #1d144d;
+	font-family: -apple-system, BlinkMacSystemFont, Ubuntu, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+input.button, .button {
+    color: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    background: #0073e8;
+    background: linear-gradient(135deg, #00bec7, #0073e8);
+    transition: all 0.2s ease;
+    width: 200px;
+}
+
+.button:hover {
+	color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.85);
+    /* box-shadow: 0 10px 40px -4px rgba(0, 0, 0, 0.8); */
+}
+
+.column span {
+	font-size: 3rem;
+}
+
+input[type="button"]:active {
+	color: #fff !important;
+	outline: none !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+*:focus {
+    outline: 0 !important;
+}

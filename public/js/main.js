@@ -8,7 +8,7 @@ var app = new Vue({
     message: 'Hello Vue!',
     clicksLeft: 0,
     score: 0,
-    nextPrize: 0,
+    nextPrize: '?',
     fetched: false
   },
   methods: {
@@ -20,21 +20,22 @@ var app = new Vue({
       })
       .then((data) => {
         console.log(data);
-        name = Object.keys(data)[0]
-        this.clicksLeft = data[name].clicksLeft;
-        this.score = data[name].score
-        this.nextPrize = data[name].nextPrize;
-        console.log(name);
+        this.clicksLeft = data.clicksLeft;
+        this.score = data.score
+        if (this.fetched)
+          this.nextPrize = data.nextPrize;
         this.fetched = true;
       });
     },
     handleClick: function() {
       audio.currentTime = 0;
       audio.play();
-      this.fetchData('http://localhost:3000/action')
+      // TODO: Change this
+      this.fetchData('http://192.168.43.68:3000/action')
     }
   },
   created: function() {
-    this.fetchData('http://localhost:3000/state');
+    // TODO: Change this
+    this.fetchData('http://192.168.43.68:3000/state');
   }
 })

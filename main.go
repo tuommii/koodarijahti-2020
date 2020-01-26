@@ -34,8 +34,7 @@ type State struct {
 }
 
 func (s *State) checkPrize(ip string) {
-	if s.NextPrize > 0 {
-		log.Println("No win", s.NextPrize)
+	if s.NextPrize > 1 {
 		s.NextPrize--
 		return
 	}
@@ -51,21 +50,29 @@ func (s *State) checkPrize(ip string) {
 
 // secod arr like [::1]:49046
 func parseIP(addr string) string {
-	arr := strings.Split(addr, " ")
-	ip := strings.Split(arr[len(arr)-1], "]")
-	return ip[0]
+	arr := strings.Split(addr, ":")
+	// ip := strings.Split(arr[len(arr)-1], "]")
+	return arr[0]
 }
 
 func (s *State) getState(w http.ResponseWriter, r *http.Request) {
+	var p *Player
 	ip := parseIP(r.RemoteAddr)
 	if _, ok := s.Players[ip]; ok {
 		// Player exist
+		p = &Player{
+			Score:      s.Players[ip].Score,
+			ClicksLeft: s.Players[ip].ClicksLeft,
+			NextPrize:  s.Players[ip].NextPrize,
+		}
 	} else {
-		p := &Player{Score: 0, ClicksLeft: 2000}
+		p = &Player{Score: 0, ClicksLeft: 2000, NextPrize: s.NextPrize}
 		s.Players[ip] = p
+		s.Players[ip].NextPrize = s.NextPrize
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(s.Players)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(s.Players[ip])
 }
 
 // Handle
@@ -82,9 +89,9 @@ func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
 	s.checkPrize(ip)
 	s.Players[ip].NextPrize = s.NextPrize
 
-	log.Println(ip, s.Players[ip])
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(s.Players)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(s.Players[ip])
 }
 
 func main() {
