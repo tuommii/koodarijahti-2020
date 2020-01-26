@@ -28,7 +28,7 @@
 				</div>
 				<div v-if="fetched">
 				</div>
-				<button class="button" v-on:click="handleClick" type="button">Click</button>
+				<button class="button" v-on:click="handleClick" type="button" :disabled="!clicksLeft">Click</button>
 				<audio id="audio-click">
 					<source src="button-pressed.ogg" type="audio/ogg">
 				</audio>
