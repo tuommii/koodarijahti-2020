@@ -31,11 +31,11 @@ var app = new Vue({
       audio.currentTime = 0;
       audio.play();
       // TODO: Change this
-      this.fetchData('http://localhost:3000/action')
+      this.fetchData('/action')
     }
   },
   created: function() {
     // TODO: Change this
-    this.fetchData('http://localhost:3000/state');
+    this.fetchData('/state');
   }
 })
