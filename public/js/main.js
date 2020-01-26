@@ -46,6 +46,10 @@ var app = new Vue({
         audio.play();
         this.fetchData('/click')
       }
+    },
+    reset: function(e) {
+      e.preventDefault();
+      this.fetchData('/reset');
     }
   },
   created: function() {

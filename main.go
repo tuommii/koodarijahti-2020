@@ -147,11 +147,26 @@ func (s *State) handleClick(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(s.Players[ip])
 }
 
+// Reset player's data
+func (s *State) reset(w http.ResponseWriter, r *http.Request) {
+	ip := s.getIP(w, r)
+	if s.Players[ip].ClicksLeft == 0 {
+		s.Players[ip].ClicksLeft = StartingPoints
+		s.Players[ip].Score = 0
+		s.Players[ip].NextPrize = s.NextPrize
+		json.NewEncoder(w).Encode(s.Players[ip])
+		return
+	}
+	log.Println("/RESET:", s.Players[ip], ip)
+	json.NewEncoder(w).Encode(s.Players[ip])
+}
+
 func main() {
 	state := createState()
 	fs := http.FileServer(http.Dir("./public"))
 	http.HandleFunc("/click", state.handleClick)
 	http.HandleFunc("/state", state.getState)
+	http.HandleFunc("/reset", state.reset)
 	http.Handle("/", fs)
 	log.Println("Server started on", state.Env)
 	err := http.ListenAndServe("0.0.0.0:"+state.Port, nil)
