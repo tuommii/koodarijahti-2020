@@ -15,7 +15,18 @@ type Player struct {
 	NextPrize  int `json:"nextPrize,omitempty"`
 }
 
-type prize struct {
+// State represents game state
+type State struct {
+	// Total clicks
+	Clicks int
+	// Hold's all players. Key is IP like: ["127.0.0.1"]
+	Players map[string]*Player
+	// How many clicks to win next prize
+	NextPrize int
+	// production/development, maybe others envs later so type string
+	Env string
+	// Port to listen
+	Port string
 }
 
 // Clicks required to win prizes, and their values
@@ -29,16 +40,18 @@ const (
 	PrizeSmall  = 5
 )
 
-// State represents game state
-type State struct {
-	// Total clicks
-	Clicks int
-	// Hold's all players. Key is IP like: ["127.0.0.1"]
-	Players map[string]*Player
-	// How many clicks to win next prize
-	NextPrize int
-	// production/development, maybe others envs later so type string
-	Env string
+// Create new State
+func createState() *State {
+	state := &State{Clicks: 0, NextPrize: 10, Env: "dev"}
+	state.Players = make(map[string]*Player)
+	state.Port = os.Getenv("PORT")
+	if state.Port == "" {
+		state.Port = "3000"
+	} else {
+		state.Env = "production"
+	}
+
+	return state
 }
 
 // Check if prize is won, and adds prize's score to player identified by ip
@@ -129,21 +142,13 @@ func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	state := &State{Clicks: 0, NextPrize: 10, Env: "dev"}
-	state.Players = make(map[string]*Player)
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-	} else {
-		state.Env = "production"
-	}
+	state := createState()
 	fs := http.FileServer(http.Dir("./public"))
 	http.HandleFunc("/action", state.handleAction)
 	http.HandleFunc("/state", state.getState)
 	http.Handle("/", fs)
 	log.Println("Server started on", state.Env)
-	err := http.ListenAndServe("0.0.0.0:"+port, nil)
+	err := http.ListenAndServe("0.0.0.0:"+state.Port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
