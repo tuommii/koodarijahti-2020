@@ -15,54 +15,66 @@ type Player struct {
 	NextPrize  int `json:"nextPrize,omitempty"`
 }
 
-// Prizes
-const (
-	PrizeBig    = 500
-	PrizeMedium = 100
-	PrizeSmall  = 10
-)
+type prize struct {
+}
 
-// Prize ...
-type Prize map[int]int
+// Clicks required to win prizes, and their values
+const (
+	PrizeBigClicks    = 500
+	PrizeMediumClicks = 100
+	PrizeSmallClicks  = 10
+
+	PrizeBig    = 250
+	PrizeMedium = 40
+	PrizeSmall  = 5
+)
 
 // State represents game state
 type State struct {
-	Clicks    int
-	Players   map[string]*Player
+	// Total clicks
+	Clicks int
+	// Hold's all players. Key is IP like: ["127.0.0.1"]
+	Players map[string]*Player
+	// How many clicks to win next prize
 	NextPrize int
-	Prizes    map[int]int
-	Env       string
+	// production/development, maybe others envs later so type string
+	Env string
 }
 
+// Check if prize is won, and adds prize's score to player identified by ip
 func (s *State) checkPrize(ip string) {
 	if s.NextPrize > 1 {
 		s.NextPrize--
 		return
 	}
-	if s.Clicks%PrizeBig == 0 {
-		s.Players[ip].Score += 250
-	} else if s.Clicks%PrizeMedium == 0 {
-		s.Players[ip].Score += 40
-	} else if s.Clicks%PrizeSmall == 0 {
-		s.Players[ip].Score += 5
+	if s.Clicks%PrizeBigClicks == 0 {
+		s.Players[ip].Score += PrizeBig
+	} else if s.Clicks%PrizeMediumClicks == 0 {
+		s.Players[ip].Score += PrizeMedium
+	} else if s.Clicks%PrizeSmallClicks == 0 {
+		s.Players[ip].Score += PrizeSmall
 	}
 	s.NextPrize = 10
 }
 
-// 10.63.255.131:20284
-// secod arr like [::1]:49046
-func parseIP(addr string) string {
-	arr := strings.Split(addr, ":")
-	str := arr[0]
-	// ip := strings.Split(arr[len(arr)-1], "]")
-	return str
-}
-
-func (s *State) getIP(w http.ResponseWriter, r *http.Request) string {
-	var ip string
+// Set headers according to ENV
+func (s *State) setHeaders(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if s.Env != "production" {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
+	}
+}
+
+// Parse ip in dev env
+func parseIP(addr string) string {
+	arr := strings.Split(addr, ":")
+	return arr[0]
+}
+
+// Get right ip according to ENV
+func (s *State) getIP(w http.ResponseWriter, r *http.Request) string {
+	var ip string
+	if s.Env != "production" {
 		ip = parseIP(r.RemoteAddr)
 	} else {
 		ip = r.Header.Get("X-Forwarded-For")
@@ -70,41 +82,49 @@ func (s *State) getIP(w http.ResponseWriter, r *http.Request) string {
 	return ip
 }
 
+// Called when page is refreshed
 func (s *State) getState(w http.ResponseWriter, r *http.Request) {
 	var p *Player
-	// fwd := r.Header.Get("fwd")
 	ip := s.getIP(w, r)
 	if _, ok := s.Players[ip]; ok {
-		// Player exist, take data form State
+		// Player exist, copy data from State
 		p = &Player{
 			Score:      s.Players[ip].Score,
 			ClicksLeft: s.Players[ip].ClicksLeft,
 			NextPrize:  s.Players[ip].NextPrize,
 		}
 	} else {
+		// Add new player
 		p = &Player{Score: 0, ClicksLeft: 20, NextPrize: s.NextPrize}
 		s.Players[ip] = p
 		s.Players[ip].NextPrize = s.NextPrize
 	}
-	log.Println("GET STATE:", s.Players[ip], ip)
+	log.Println("/STATE:", s.Players[ip], ip)
 	json.NewEncoder(w).Encode(s.Players[ip])
 }
 
-// Handle
-func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
-	ip := s.getIP(w, r)
-
-	if s.Players[ip].ClicksLeft == 0 {
-		json.NewEncoder(w).Encode(s.Players[ip])
-		return
-	}
-
+// Update game state
+func (s *State) update(ip string) {
 	s.Clicks++
 	s.Players[ip].ClicksLeft--
 	s.checkPrize(ip)
 	s.Players[ip].NextPrize = s.NextPrize
+}
 
-	log.Println("ACTION:", s.Players[ip], ip)
+// Called when button is clicked
+func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
+	ip := s.getIP(w, r)
+	if s.Players[ip].ClicksLeft == 0 {
+		json.NewEncoder(w).Encode(s.Players[ip])
+		return
+	}
+	s.update(ip)
+	// s.Clicks++
+	// s.Players[ip].ClicksLeft--
+	// s.checkPrize(ip)
+	// s.Players[ip].NextPrize = s.NextPrize
+
+	log.Println("/ACTION:", s.Players[ip], ip)
 	json.NewEncoder(w).Encode(s.Players[ip])
 }
 
