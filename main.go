@@ -8,62 +8,96 @@ import (
 	"strings"
 )
 
-// Player represents player
+// Player represents a player and contains all data that are sended to client
 type Player struct {
 	Score      int `json:"score"`
 	ClicksLeft int `json:"clicksLeft"`
+	NextPrize  int `json:"nextPrize"`
 }
 
-var gClicks int
-var gPlayers map[string]*Player
+// Prizes
+const (
+	PrizeBig    = 500
+	PrizeMedium = 100
+	PrizeSmall  = 10
+)
 
-// [::1]:49046
+// Prize ...
+type Prize map[int]int
+
+// State represents game state
+type State struct {
+	Clicks    int
+	Players   map[string]*Player
+	NextPrize int
+	Prizes    map[int]int
+}
+
+func (s *State) checkPrize(ip string) {
+	if s.NextPrize > 0 {
+		log.Println("No win", s.NextPrize)
+		s.NextPrize--
+		return
+	}
+	if s.Clicks%PrizeBig == 0 {
+		s.Players[ip].Score += 250
+	} else if s.Clicks%PrizeMedium == 0 {
+		s.Players[ip].Score += 40
+	} else if s.Clicks%PrizeSmall == 0 {
+		s.Players[ip].Score += 5
+	}
+	s.NextPrize = 10
+}
+
+// secod arr like [::1]:49046
 func parseIP(addr string) string {
 	arr := strings.Split(addr, " ")
 	ip := strings.Split(arr[len(arr)-1], "]")
 	return ip[0]
 }
 
-func init() {
-	gPlayers = make(map[string]*Player)
-	gClicks = 0
-}
-
-func getState(w http.ResponseWriter, r *http.Request) {
+func (s *State) getState(w http.ResponseWriter, r *http.Request) {
 	ip := parseIP(r.RemoteAddr)
-	if _, ok := gPlayers[ip]; ok {
+	if _, ok := s.Players[ip]; ok {
 		// Player exist
 	} else {
-		p := &Player{Score: 0, ClicksLeft: 20}
-		gPlayers[ip] = p
+		p := &Player{Score: 0, ClicksLeft: 2000}
+		s.Players[ip] = p
 	}
 	w.Header().Set("Content-Type", "application/json")
-	log.Println(gPlayers[ip])
-	json.NewEncoder(w).Encode(gPlayers)
+	json.NewEncoder(w).Encode(s.Players)
 }
 
-// Handle REe
-func incrementCounter(w http.ResponseWriter, r *http.Request) {
+// Handle
+func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
 	ip := parseIP(r.RemoteAddr)
-	// Check prizes
-	if (gClicks+1)%10 == 0 {
-		gPlayers[ip].Score = 10
+
+	if s.Players[ip].ClicksLeft == 0 {
+		json.NewEncoder(w).Encode(s.Players)
+		return
 	}
-	gPlayers[ip].ClicksLeft--
-	gClicks++
-	log.Println(ip, gPlayers[ip])
+
+	s.Clicks++
+	s.Players[ip].ClicksLeft--
+	s.checkPrize(ip)
+	s.Players[ip].NextPrize = s.NextPrize
+
+	log.Println(ip, s.Players[ip])
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(gPlayers)
+	json.NewEncoder(w).Encode(s.Players)
 }
 
 func main() {
+	state := &State{Clicks: 0, NextPrize: 10}
+	state.Players = make(map[string]*Player)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
 	}
 	fs := http.FileServer(http.Dir("./public"))
-	http.HandleFunc("/inc", incrementCounter)
-	http.HandleFunc("/state", getState)
+	http.HandleFunc("/action", state.handleAction)
+	http.HandleFunc("/state", state.getState)
 	http.Handle("/", fs)
 	err := http.ListenAndServe("0.0.0.0:"+port, nil)
 	if err != nil {

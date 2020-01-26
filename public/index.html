@@ -9,9 +9,14 @@
 <body>
 	<div id="app">
 		<div v-if="fetched">
-			{{clicksLeft}}
+			<span>{{clicksLeft}}</span>
+			<span>{{score}}</span>
+			<span>{{nextPrize}}</span>
 		</div>
 		<button v-on:click="handleClick" type="button">Click</button>
+		<audio id="audio-click">
+			<source src="button-pressed.ogg" type="audio/ogg">
+		</audio>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->

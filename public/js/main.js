@@ -1,15 +1,18 @@
 // console.log('Hello!');
 
+const audio = document.getElementById('audio-click');
+
 var app = new Vue({
   el: '#app',
   data: {
     message: 'Hello Vue!',
-    clicksLeft: 1,
-    total: 2,
+    clicksLeft: 0,
+    score: 0,
+    nextPrize: 0,
     fetched: false
   },
   methods: {
-    initData: function(url) {
+    fetchData: function(url) {
       const req = new Request(url);
       fetch(req)
       .then((res) => {
@@ -17,17 +20,21 @@ var app = new Vue({
       })
       .then((data) => {
         console.log(data);
-        a = Object.keys(data)[0]
-        this.clicksLeft = data[a].clicksLeft;;
-        console.log(a);
+        name = Object.keys(data)[0]
+        this.clicksLeft = data[name].clicksLeft;
+        this.score = data[name].score
+        this.nextPrize = data[name].nextPrize;
+        console.log(name);
         this.fetched = true;
       });
     },
     handleClick: function() {
-      this.initData('http://localhost:3000/inc')
+      audio.currentTime = 0;
+      audio.play();
+      this.fetchData('http://localhost:3000/action')
     }
   },
   created: function() {
-    this.initData('http://localhost:3000/state');
+    this.fetchData('http://localhost:3000/state');
   }
 })
