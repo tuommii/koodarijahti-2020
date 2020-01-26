@@ -72,6 +72,7 @@ func (s *State) getState(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	log.Println("GET STATE:", s.Players[ip], ip)
 	json.NewEncoder(w).Encode(s.Players[ip])
 }
 
@@ -91,6 +92,7 @@ func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	log.Println("ACTION:", s.Players[ip], ip)
 	json.NewEncoder(w).Encode(s.Players[ip])
 }
 
@@ -106,6 +108,7 @@ func main() {
 	http.HandleFunc("/action", state.handleAction)
 	http.HandleFunc("/state", state.getState)
 	http.Handle("/", fs)
+	log.Println("Server starting...")
 	err := http.ListenAndServe("0.0.0.0:"+port, nil)
 	if err != nil {
 		log.Fatal(err)
