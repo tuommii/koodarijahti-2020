@@ -7,15 +7,17 @@ const STARTING_POINTS = 20;
 var app = new Vue({
   el: '#app',
   data: {
-    message: 'Hello Vue!',
+    message: '',
     clicksLeft: STARTING_POINTS,
     score: 0,
     nextPrize: '?',
-    fetched: false
+    started: false,
+    isFetching: false
   },
   methods: {
     fetchData: function(url) {
       const req = new Request(url);
+      this.isFetching = true;
       fetch(req)
       .then((res) => {
         return res.json();
@@ -23,18 +25,27 @@ var app = new Vue({
       .then((data) => {
         console.log(data);
         this.clicksLeft = data.clicksLeft;
+        if (this.score != data.score && url === "/click")
+          this.message = `You won ${data.score-this.score} points!`;
+        else
+          this.message = '';
         this.score = data.score
-        if (this.clicksLeft != STARTING_POINTS)
+        if (this.clicksLeft != STARTING_POINTS) {
           this.nextPrize = data.nextPrize;
-        this.fetched = true;
+
+        }
+        this.started = true;
+        this.isFetching = false;
       });
     },
     handleClick: function(e) {
       e.preventDefault();
-      audio.currentTime = 0;
-      audio.play();
       // TODO: Change this
-      this.fetchData('/action')
+      if (this.clicksLeft || !started) {
+        audio.currentTime = 0;
+        audio.play();
+        this.fetchData('/click')
+      }
     }
   },
   created: function() {

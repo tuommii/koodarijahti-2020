@@ -56,6 +56,7 @@ func createState() *State {
 	return state
 }
 
+// Create new Player
 func createPlayer(score int, clicksLeft int, nextPrize int) *Player {
 	p := &Player{Score: score, ClicksLeft: clicksLeft, NextPrize: nextPrize}
 	return p
@@ -93,7 +94,7 @@ func (s *State) setHeaders(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Parse ip in dev env
+// Parse ip if ENV is dev
 func parseIP(addr string) string {
 	arr := strings.Split(addr, ":")
 	return arr[0]
@@ -135,7 +136,7 @@ func (s *State) update(ip string) {
 }
 
 // Called when button is clicked
-func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
+func (s *State) handleClick(w http.ResponseWriter, r *http.Request) {
 	ip := s.getIP(w, r)
 	if s.Players[ip].ClicksLeft == 0 {
 		json.NewEncoder(w).Encode(s.Players[ip])
@@ -149,7 +150,7 @@ func (s *State) handleAction(w http.ResponseWriter, r *http.Request) {
 func main() {
 	state := createState()
 	fs := http.FileServer(http.Dir("./public"))
-	http.HandleFunc("/action", state.handleAction)
+	http.HandleFunc("/click", state.handleClick)
 	http.HandleFunc("/state", state.getState)
 	http.Handle("/", fs)
 	log.Println("Server started on", state.Env)
