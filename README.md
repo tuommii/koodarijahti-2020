@@ -35,3 +35,10 @@ välissä suljettaisiinkin.
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
 * Jos ympäristömuuttujaa __PORT__ ei löydy, kuunnellaan porttia 3000.
 * Painikkeelle asetettu pieni viive, ennen kuin sitä voi uudelleen klikata.
+
+## Kokeile itse
+
+### Linux / OS X
+Go tulee olla asennettuna. Suorita **hakemiston juuressa**:
+```make```
+```./bin/server```
