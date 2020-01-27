@@ -5,17 +5,17 @@ const clickAudio = document.getElementById('audio-click');
 const gameOverAudio = document.getElementById('audio-game-over');
 
 const STARTING_POINTS = 20;
+const DELAY = 200;
 
 function handleClick(e) {
   e.preventDefault();
-  // TODO: Change this
   if (this.points) {
     clickAudio.currentTime = 0;
     clickAudio.play();
     this.isDisabled = true;
     window.setTimeout(() => {
       this.isDisabled = false;
-    }, 250);
+    }, DELAY);
     this.fetchData('/click')
   }
 }
@@ -33,10 +33,7 @@ function fetchData(url) {
       console.log(data);
       this.showMessage(data, url);
       this.points = data.points;
-      if (this.started) {
-        this.nextPrize = data.nextPrize;
-      }
-      this.started = true;
+      this.nextPrize = data.nextPrize;
       this.isFetching = false;
     });
 }
@@ -61,7 +58,6 @@ function showMessage(data, url) {
 
 function reset(e) {
   e.preventDefault();
-  this.started = false;
   this.fetchData('/reset');
 }
 
@@ -72,7 +68,6 @@ var app = new Vue({
   data: {
     message: '',
     nextPrize: '?',
-    started: false,
     isFetching: false,
     isDisabled: false,
     points: STARTING_POINTS,
@@ -86,5 +81,5 @@ var app = new Vue({
   created: function () {
     // TODO: Change this
     this.fetchData('/state');
-  }
-})
+  },
+});

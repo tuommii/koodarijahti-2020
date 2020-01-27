@@ -38,9 +38,10 @@ input[type="button"]:active {
 .message {
 	padding: 0.5rem;
 	color: #222;
+	width: 200px;
 	/* color: #e2d283; */
 }
 
 p.message {
-	min-height: 3rem;
+	min-height: 2.5rem;
 }
