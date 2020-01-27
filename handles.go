@@ -12,7 +12,7 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(w, r)
 	if _, ok := gs.Players[ip]; ok {
 		// Player exist, copy data from GameState
-		p = createPlayer(gs.Players[ip].Points, gs.Players[ip].NextPrize)
+		// p = createPlayer(gs.Players[ip].Points, gs.Players[ip].NextPrize)
 	} else {
 		// Add new player
 		p = createPlayer(StartingPoints, gs.NextPrize)
@@ -25,7 +25,9 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 // Update's game state
 func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(w, r)
-	if gs.Players[ip].Points == 0 {
+	p := gs.Players[ip]
+	log.Printf("MIIKKA: %+v, %+v, %s", p, gs.Players, ip)
+	if gs.Players[ip] != nil && gs.Players[ip].Points == 0 {
 		json.NewEncoder(w).Encode(gs.Players[ip])
 		return
 	}
