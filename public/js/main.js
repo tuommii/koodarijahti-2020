@@ -52,12 +52,15 @@ var app = new Vue({
       }
     },
     showMessage: function(data, url) {
+      if (this.score != data.score && url === "/click")
+      {
+        prizeAudio.currentTime = 0;
+        prizeAudio.play();
+      }
       if (!this.clicksLeft) {
         this.message = `gg! You scored ${data.score} points!`;
       }
       else if (this.score != data.score && url === "/click") {
-        prizeAudio.currentTime = 0;
-        prizeAudio.play();
         this.message = `You won ${data.score-this.score} points!`;
       }
       else {
