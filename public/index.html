@@ -29,7 +29,7 @@
 						<span>Next Prize: {{nextPrize}}</span>
 					</div>
 					<div class="column is-4 is-offset-4">
-						<button class="button" v-on:click="handleClick" type="button" :disabled="!points">Click</button>
+						<button class="button" v-on:click="handleClick" type="button" :disabled="isDisabled || !points">Click</button>
 					</div>
 					<div class="column is-4 is-offset-4" v-if="!points">
 						<button class="button" v-on:click="reset" type="button">Reset</button>
