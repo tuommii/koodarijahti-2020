@@ -50,11 +50,8 @@ var app = new Vue({
       }
     },
     showMessage: function(data, url) {
-      if (this.points != data.points && url === "/click")
-      {
-      }
       if (!this.points) {
-        this.message = `gg!`;
+        this.message = `Game Over!`;
       }
       else if (data.points > this.points && url === "/click") {
         prizeAudio.currentTime = 0;
