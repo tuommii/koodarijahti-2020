@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// Called when page is refreshed
+// handleGetState returns current state
 func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 	var p *Player
 	ip := gs.getIP(w, r)
@@ -22,7 +22,7 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
-// Called when button is clicked
+// Update's game state
 func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(w, r)
 	if gs.Players[ip].ClicksLeft == 0 {
