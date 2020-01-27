@@ -12,7 +12,8 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(w, r)
 	if _, ok := gs.Players[ip]; ok {
 		// Player exist, copy data from GameState
-		p = createPlayer(gs.Players[ip].Points, gs.Players[ip].NextPrize)
+		p.Points = gs.Players[ip].Points
+		p.NextPrize = gs.Players[ip].NextPrize
 	} else {
 		// Add new player
 		p = createPlayer(StartingPoints, gs.NextPrize)
