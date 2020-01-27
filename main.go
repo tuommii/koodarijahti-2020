@@ -108,7 +108,7 @@ func parseIP(addr string) string {
 }
 
 // Get right ip according to ENV
-func (gs *GameState) getIP(w http.ResponseWriter, r *http.Request) string {
+func (gs *GameState) getIP(r *http.Request) string {
 	var ip string
 	if gs.Env != "production" {
 		ip = parseIP(r.RemoteAddr)
