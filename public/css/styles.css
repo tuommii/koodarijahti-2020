@@ -40,3 +40,7 @@ input[type="button"]:active {
 	color: #222;
 	/* color: #e2d283; */
 }
+
+p.message {
+	min-height: 3rem;
+}

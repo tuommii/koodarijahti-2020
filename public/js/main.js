@@ -49,12 +49,10 @@ function showMessage(data, url) {
     }
     this.message = `Game Over!`;
   }
-  else if (data.points > this.points) {
-    if (url === "/click") {
+  else if (data.points > this.points && url === "/click") {
       prizeAudio.currentTime = 0;
       prizeAudio.play();
-    }
-    this.message = `You won ${data.points - this.points + 1} points!`;
+      this.message = `You won ${data.points - this.points + 1} points!`;
   }
   else {
     this.message = '';
