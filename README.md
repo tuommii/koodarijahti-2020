@@ -1,6 +1,6 @@
 # Koodarijahti 2020
 
-Mielestäni tehtävänanto oli erittäin hauska ja hyvin suunniteltu, jatkuvasti tekisi mieli lisätä jokin uusi ominaisuus.
+Mielestäni tehtävänanto oli **erittäin hauska** ja **hyvin suunniteltu**, jatkuvasti tekisi mieli lisätä jokin uusi ominaisuus.
 
 Projekti livenä: [Heroku app](https://multiplayer-button.herokuapp.com/) (27.11.2020)
 
@@ -21,9 +21,9 @@ Siltä varalta, ettei koodini olekaan niin helposti luettavaa kuin toivon:
 API:
 ```markdown
 - /state
-	- Palauttaa ainoastaan pelin nykyisen tilan
+	- Ainoastaan palauttaa pelin nykyisen tilan
 - /click
-	- Muuttaa pelin tilaa. Kutsutaan aina painalluksen jälkeen
+	- Muuttaa pelin tilaa sekä palauttaa sen
 - /reset
 	- Nollaa pelaajan arvot.
 ```
@@ -34,11 +34,13 @@ Tämä ei vaikuta palkintojenjakoon.
 välissä suljettaisiinkin.
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
 * Jos ympäristömuuttujaa __PORT__ ei löydy, kuunnellaan porttia 3000.
-* Painikkeelle asetettu pieni viive, ennen kuin sitä voi uudelleen klikata.
+* Painikkeelle asetettu pieni viive ennen kuin sitä voi uudelleen klikata.
 
 ## Kokeile itse
+Go tulee olla asennettuna. Kloonaa repo ja suorita **hakemiston juuressa**:
 
-### Linux / OS X
-Go tulee olla asennettuna. Suorita **hakemiston juuressa**:
-```make```
-```./bin/server```
+```go build -o server```
+
+```./server```
+
+Avaa selaimessa [http://localhost:3000/](http://localhost:3000/)
