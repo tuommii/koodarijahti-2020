@@ -27,9 +27,7 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 // Update's game state
 func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(w, r)
-	p := gs.Players[ip]
-	log.Printf("MIIKKA: %+v, %+v, %s", p, gs.Players, ip)
-	if gs.Players[ip] != nil && gs.Players[ip].Points == 0 {
+	if gs.Players[ip].Points == 0 {
 		json.NewEncoder(w).Encode(gs.Players[ip])
 		return
 	}
