@@ -95,6 +95,7 @@ func (gs *GameState) update(ip string) {
 // Set headers according to ENV
 func (gs *GameState) setHeaders(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Connection", "Keep-Alive")
 	if gs.Env != "production" {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 	}

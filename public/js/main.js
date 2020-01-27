@@ -25,6 +25,8 @@ var app = new Vue({
         return res.json();
       })
       .then((data) => {
+        if (data === undefined)
+          return;
         console.log(data);
         this.showMessage(data, url);
         this.points = data.points;
