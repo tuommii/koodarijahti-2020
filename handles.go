@@ -25,12 +25,15 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 // Update's game state
 func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(w, r)
+	player := gs.Players[ip]
+	log.Println("IP:", ip, player)
 	if gs.Players[ip].Points == 0 {
 		json.NewEncoder(w).Encode(gs.Players[ip])
+	} else {
+		gs.update(ip)
+		log.Println("/ACTION:", gs.Players[ip], ip, gs.Clicks)
+		json.NewEncoder(w).Encode(gs.Players[ip])
 	}
-	gs.update(ip)
-	log.Println("/ACTION:", gs.Players[ip], ip, gs.Clicks)
-	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
 // Reset player's data
