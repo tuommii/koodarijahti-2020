@@ -10,29 +10,31 @@
 </head>
 <body>
 	<section id="app" class="section hero is-fullheight">
-		<div class="hero-body is-centered">
+		<audio id="audio-click">
+			<source src="button-pressed.ogg" type="audio/ogg">
+		</audio>
+		<div class="hero-body">
 			<div v-if="started" class="container">
 				<div class="columns is-multiline is-mobile">
-					<div class="column is-full">
+					<div class="column is-4 is-offset-4">
 						<p>{{message}}</p>
 					</div>
-					<div class="column is-third">
-						<span>Clicks left: {{clicksLeft}}</span>
+					<div class="column is-4 is-offset-4">
+						<span class="is-centered">Clicks left: {{clicksLeft}}</span>
 					</div>
-					<div class="column is-third">
+					<div class="column is-4 is-offset-4">
 						<span>Score: {{score}}</span>
 					</div>
-					<div class="column is-third">
+					<div class="column is-4 is-offset-4">
 						<span>Next Prize: {{nextPrize}}</span>
 					</div>
+					<div class="column is-4 is-offset-4">
+						<button class="button" v-on:click="handleClick" type="button" :disabled="isDisabled || !clicksLeft">Click</button>
+					</div>
+					<div class="column is-4 is-offset-4" v-if="!clicksLeft">
+						<button class="button" v-on:click="reset" type="button">Reset</button>
+					</div>
 				</div>
-				<button class="button" v-on:click="handleClick" type="button" :disabled="!clicksLeft">Click</button>
-				<div v-if="!clicksLeft">
-					<button class="button" v-on:click="reset" type="button">Reset</button>
-				</div>
-				<audio id="audio-click">
-					<source src="button-pressed.ogg" type="audio/ogg">
-				</audio>
 			</div>
 		</div>
 	</section>

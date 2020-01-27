@@ -13,7 +13,8 @@ var app = new Vue({
     score: 0,
     nextPrize: '?',
     started: false,
-    isFetching: false
+    isFetching: false,
+    isDisabled: false,
   },
   methods: {
     fetchData: function(url) {
@@ -33,7 +34,6 @@ var app = new Vue({
         this.score = data.score
         if (this.clicksLeft != STARTING_POINTS) {
           this.nextPrize = data.nextPrize;
-
         }
         this.started = true;
         this.isFetching = false;
@@ -45,6 +45,11 @@ var app = new Vue({
       if (this.clicksLeft || !started) {
         audio.currentTime = 0;
         audio.play();
+        this.isDisabled = true;
+        window.setTimeout(() => {
+          console.log(this.isDisabled);
+          this.isDisabled = false;
+        }, 500);
         this.fetchData('/click')
       }
     },
