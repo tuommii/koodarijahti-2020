@@ -9,9 +9,8 @@ import (
 
 // Player represents a player and contains all data that are sended to client
 type Player struct {
-	Score      int `json:"score"`
-	ClicksLeft int `json:"clicksLeft"`
-	NextPrize  int `json:"nextPrize,omitempty"`
+	Points    int `json:"points"`
+	NextPrize int `json:"nextPrize,omitempty"`
 }
 
 // GameState represents game state
@@ -56,8 +55,8 @@ func createGameState() *GameState {
 }
 
 // Create new Player
-func createPlayer(score int, clicksLeft int, nextPrize int) *Player {
-	p := &Player{Score: score, ClicksLeft: clicksLeft, NextPrize: nextPrize}
+func createPlayer(points int, nextPrize int) *Player {
+	p := &Player{Points: points, NextPrize: nextPrize}
 	return p
 }
 
@@ -81,14 +80,14 @@ func (gs *GameState) checkPrize(ip string) {
 		gs.NextPrize--
 		return
 	}
-	gs.Players[ip].Score += gs.getPrize()
+	gs.Players[ip].Points += gs.getPrize()
 	gs.NextPrize = PrizeSmallClicks
 }
 
 // Update game state
 func (gs *GameState) update(ip string) {
 	gs.Clicks++
-	gs.Players[ip].ClicksLeft--
+	gs.Players[ip].Points--
 	gs.checkPrize(ip)
 	gs.Players[ip].NextPrize = gs.NextPrize
 }

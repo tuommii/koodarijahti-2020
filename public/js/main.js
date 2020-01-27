@@ -10,12 +10,11 @@ var app = new Vue({
   el: '#app',
   data: {
     message: '',
-    clicksLeft: STARTING_POINTS,
-    score: 0,
     nextPrize: '?',
     started: false,
     isFetching: false,
     isDisabled: false,
+    points: STARTING_POINTS,
   },
   methods: {
     fetchData: function(url) {
@@ -27,12 +26,11 @@ var app = new Vue({
       })
       .then((data) => {
         console.log(data);
-        this.clicksLeft = data.clicksLeft;
         this.showMessage(data, url);
-        this.score = data.score
-        if (this.clicksLeft != STARTING_POINTS) {
-          this.nextPrize = data.nextPrize;
-        }
+        this.points = data.points;
+        // if (this.clicksLeft != STARTING_POINTS) {
+        this.nextPrize = data.nextPrize;
+        // }
         this.started = true;
         this.isFetching = false;
       });
@@ -40,7 +38,7 @@ var app = new Vue({
     handleClick: function(e) {
       e.preventDefault();
       // TODO: Change this
-      if (this.clicksLeft || !started) {
+      if (this.points) {
         clickAudio.currentTime = 0;
         clickAudio.play();
         this.isDisabled = true;
@@ -52,16 +50,16 @@ var app = new Vue({
       }
     },
     showMessage: function(data, url) {
-      if (this.score != data.score && url === "/click")
+      if (this.points != data.points && url === "/click")
       {
+      }
+      if (!this.points) {
+        this.message = `gg!`;
+      }
+      else if (data.points > this.points && url === "/click") {
         prizeAudio.currentTime = 0;
         prizeAudio.play();
-      }
-      if (!this.clicksLeft) {
-        this.message = `gg! You scored ${data.score} points!`;
-      }
-      else if (this.score != data.score && url === "/click") {
-        this.message = `You won ${data.score-this.score} points!`;
+        this.message = `You won ${data.points-this.points+1} points!`;
       }
       else {
         this.message = '';

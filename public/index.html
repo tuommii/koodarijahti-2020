@@ -20,21 +20,18 @@
 			<div v-if="started" class="container">
 				<div class="columns is-multiline is-mobile">
 					<div class="column is-4 is-offset-4">
-						<p>{{message}}</p>
+						<p class="message">{{message}}</p>
 					</div>
 					<div class="column is-4 is-offset-4">
-						<span class="is-centered">Clicks left: {{clicksLeft}}</span>
-					</div>
-					<div class="column is-4 is-offset-4">
-						<span>Score: {{score}}</span>
+						<span>Points: {{points}}</span>
 					</div>
 					<div class="column is-4 is-offset-4">
 						<span>Next Prize: {{nextPrize}}</span>
 					</div>
 					<div class="column is-4 is-offset-4">
-						<button class="button" v-on:click="handleClick" type="button" :disabled="isDisabled || !clicksLeft">Click</button>
+						<button class="button" v-on:click="handleClick" type="button" :disabled="!points">Click</button>
 					</div>
-					<div class="column is-4 is-offset-4" v-if="!clicksLeft">
+					<div class="column is-4 is-offset-4" v-if="!points">
 						<button class="button" v-on:click="reset" type="button">Reset</button>
 					</div>
 				</div>

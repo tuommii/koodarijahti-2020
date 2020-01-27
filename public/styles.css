@@ -35,3 +35,8 @@ input[type="button"]:active {
 *:focus {
     outline: 0 !important;
 }
+.message {
+	padding: 0.5rem;
+	color: #222;
+	/* color: #e2d283; */
+}
