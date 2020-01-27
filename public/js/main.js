@@ -1,4 +1,3 @@
-// console.log('Hello!');
 
 const prizeAudio = document.getElementById('audio-prize');
 const clickAudio = document.getElementById('audio-click');
