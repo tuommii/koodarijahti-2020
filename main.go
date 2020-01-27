@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -15,8 +14,8 @@ type Player struct {
 	NextPrize  int `json:"nextPrize,omitempty"`
 }
 
-// State represents game state
-type State struct {
+// GameState represents game state
+type GameState struct {
 	// Total clicks
 	Clicks int
 	// Hold's all players. Key is IP like: ["127.0.0.1"]
@@ -43,17 +42,17 @@ const (
 const StartingPoints = 20
 
 // Create new State
-func createState() *State {
-	state := &State{Clicks: 0, NextPrize: PrizeSmallClicks, Env: "dev"}
-	state.Players = make(map[string]*Player)
-	state.Port = os.Getenv("PORT")
-	if state.Port == "" {
-		state.Port = "3000"
+func createGameState() *GameState {
+	gs := &GameState{Clicks: 0, NextPrize: PrizeSmallClicks, Env: "dev"}
+	gs.Players = make(map[string]*Player)
+	gs.Port = os.Getenv("PORT")
+	if gs.Port == "" {
+		gs.Port = "3000"
 	} else {
-		state.Env = "production"
+		gs.Env = "production"
 	}
 
-	return state
+	return gs
 }
 
 // Create new Player
@@ -63,13 +62,13 @@ func createPlayer(score int, clicksLeft int, nextPrize int) *Player {
 }
 
 // Get amount of prize
-func (s *State) getPrize() int {
-	if s.Clicks%PrizeBigClicks == 0 {
+func (gs *GameState) getPrize() int {
+	if gs.Clicks%PrizeBigClicks == 0 {
+		gs.Clicks = 0
 		return PrizeBig
-	} else if s.Clicks%PrizeMediumClicks == 0 {
+	} else if gs.Clicks%PrizeMediumClicks == 0 {
 		return PrizeMedium
-	} else if s.Clicks%PrizeSmallClicks == 0 {
-		// s.Players[ip].Score += PrizeSmall
+	} else if gs.Clicks%PrizeSmallClicks == 0 {
 		return PrizeSmall
 	}
 	return 0
@@ -77,19 +76,27 @@ func (s *State) getPrize() int {
 
 // Check if prize is won, and adds prize's score to player identified by ip
 // Only every 10:nth (smallest count for prize) need's to be checked
-func (s *State) checkPrize(ip string) {
-	if s.NextPrize > 1 {
-		s.NextPrize--
+func (gs *GameState) checkPrize(ip string) {
+	if gs.NextPrize > 1 {
+		gs.NextPrize--
 		return
 	}
-	s.Players[ip].Score += s.getPrize()
-	s.NextPrize = PrizeSmallClicks
+	gs.Players[ip].Score += gs.getPrize()
+	gs.NextPrize = PrizeSmallClicks
+}
+
+// Update game state
+func (gs *GameState) update(ip string) {
+	gs.Clicks++
+	gs.Players[ip].ClicksLeft--
+	gs.checkPrize(ip)
+	gs.Players[ip].NextPrize = gs.NextPrize
 }
 
 // Set headers according to ENV
-func (s *State) setHeaders(w http.ResponseWriter, r *http.Request) {
+func (gs *GameState) setHeaders(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	if s.Env != "production" {
+	if gs.Env != "production" {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 	}
 }
@@ -101,9 +108,9 @@ func parseIP(addr string) string {
 }
 
 // Get right ip according to ENV
-func (s *State) getIP(w http.ResponseWriter, r *http.Request) string {
+func (gs *GameState) getIP(w http.ResponseWriter, r *http.Request) string {
 	var ip string
-	if s.Env != "production" {
+	if gs.Env != "production" {
 		ip = parseIP(r.RemoteAddr)
 	} else {
 		ip = r.Header.Get("X-Forwarded-For")
@@ -111,62 +118,12 @@ func (s *State) getIP(w http.ResponseWriter, r *http.Request) string {
 	return ip
 }
 
-// Called when page is refreshed
-func (s *State) getState(w http.ResponseWriter, r *http.Request) {
-	var p *Player
-	ip := s.getIP(w, r)
-	if _, ok := s.Players[ip]; ok {
-		// Player exist, copy data from State
-		p = createPlayer(s.Players[ip].Score, s.Players[ip].ClicksLeft, s.Players[ip].NextPrize)
-	} else {
-		// Add new player
-		p = createPlayer(0, StartingPoints, s.NextPrize)
-		s.Players[ip] = p
-	}
-	log.Println("/STATE:", s.Players[ip], ip)
-	json.NewEncoder(w).Encode(s.Players[ip])
-}
-
-// Update game state
-func (s *State) update(ip string) {
-	s.Clicks++
-	s.Players[ip].ClicksLeft--
-	s.checkPrize(ip)
-	s.Players[ip].NextPrize = s.NextPrize
-}
-
-// Called when button is clicked
-func (s *State) handleClick(w http.ResponseWriter, r *http.Request) {
-	ip := s.getIP(w, r)
-	if s.Players[ip].ClicksLeft == 0 {
-		json.NewEncoder(w).Encode(s.Players[ip])
-		return
-	}
-	s.update(ip)
-	log.Println("/ACTION:", s.Players[ip], ip)
-	json.NewEncoder(w).Encode(s.Players[ip])
-}
-
-// Reset player's data
-func (s *State) reset(w http.ResponseWriter, r *http.Request) {
-	ip := s.getIP(w, r)
-	if s.Players[ip].ClicksLeft == 0 {
-		s.Players[ip].ClicksLeft = StartingPoints
-		s.Players[ip].Score = 0
-		s.Players[ip].NextPrize = s.NextPrize
-		json.NewEncoder(w).Encode(s.Players[ip])
-		return
-	}
-	log.Println("/RESET:", s.Players[ip], ip)
-	json.NewEncoder(w).Encode(s.Players[ip])
-}
-
 func main() {
-	state := createState()
+	state := createGameState()
 	fs := http.FileServer(http.Dir("./public"))
 	http.HandleFunc("/click", state.handleClick)
-	http.HandleFunc("/state", state.getState)
-	http.HandleFunc("/reset", state.reset)
+	http.HandleFunc("/state", state.handleGetState)
+	http.HandleFunc("/reset", state.handleReset)
 	http.Handle("/", fs)
 	log.Println("Server started on", state.Env)
 	err := http.ListenAndServe("0.0.0.0:"+state.Port, nil)
