@@ -2,6 +2,7 @@
 
 const prizeAudio = document.getElementById('audio-prize');
 const clickAudio = document.getElementById('audio-click');
+const gameOverAudio = document.getElementById('audio-game-over');
 
 const STARTING_POINTS = 20;
 
@@ -30,9 +31,9 @@ var app = new Vue({
         console.log(data);
         this.showMessage(data, url);
         this.points = data.points;
-        // if (this.clicksLeft != STARTING_POINTS) {
-        this.nextPrize = data.nextPrize;
-        // }
+        if (this.started) {
+          this.nextPrize =  data.nextPrize;
+        }
         this.started = true;
         this.isFetching = false;
       });
@@ -45,14 +46,15 @@ var app = new Vue({
         clickAudio.play();
         this.isDisabled = true;
         window.setTimeout(() => {
-          console.log(this.isDisabled);
           this.isDisabled = false;
         }, 250);
         this.fetchData('/click')
       }
     },
     showMessage: function(data, url) {
-      if (!data.points) {
+      if (!data.points && url === "/click") {
+        gameOverAudio.currentTime = 0;
+        gameOverAudio.play();
         this.message = `Game Over!`;
       }
       else if (data.points > this.points && url === "/click") {
@@ -66,6 +68,7 @@ var app = new Vue({
     },
     reset: function(e) {
       e.preventDefault();
+      this.started = false;
       this.fetchData('/reset');
     }
   },

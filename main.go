@@ -63,6 +63,7 @@ func createPlayer(points int, nextPrize int) *Player {
 // Get amount of prize
 func (gs *GameState) getPrize() int {
 	if gs.Clicks%PrizeBigClicks == 0 {
+		// Not going over int max value
 		gs.Clicks = 0
 		return PrizeBig
 	} else if gs.Clicks%PrizeMediumClicks == 0 {
