@@ -52,7 +52,7 @@ var app = new Vue({
       }
     },
     showMessage: function(data, url) {
-      if (!this.points) {
+      if (!data.points) {
         this.message = `Game Over!`;
       }
       else if (data.points > this.points && url === "/click") {
