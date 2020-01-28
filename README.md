@@ -2,7 +2,7 @@
 
 <img src="https://github.com/tuommii/vincit/blob/master/screenshot.png" width="300">
 
-Mielestäni tehtävänanto oli **erittäin hauska** ja **hyvin suunniteltu**, jatkuvasti teki mieli lisätä jokin uusi ominaisuus.
+Mielestäni [tehtävänanto](https://github.com/tuommii/vincit/blob/master/Tehtava.pdf) oli **erittäin hauska** ja **hyvin suunniteltu**, jatkuvasti teki mieli lisätä jokin uusi ominaisuus.
 
 Projekti livenä: [Heroku app](https://multiplayer-button.herokuapp.com/) (27.11.2020)
 
