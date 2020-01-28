@@ -9,8 +9,9 @@ import (
 
 // Player represents a player and contains all data that are sended to client
 type Player struct {
-	Points    int `json:"points"`
-	NextPrize int `json:"nextPrize,omitempty"`
+	Points    int  `json:"points"`
+	NextPrize int  `json:"nextPrize"`
+	FirstTry  bool `json:"firstTry"`
 }
 
 // GameState represents game state
@@ -38,7 +39,7 @@ const (
 )
 
 // StartingPoints for player
-const StartingPoints = 20
+const StartingPoints = 2
 
 // Create new State
 func createGameState() *GameState {
@@ -55,7 +56,7 @@ func createGameState() *GameState {
 
 // Create new Player
 func createPlayer(points int, nextPrize int) *Player {
-	p := &Player{Points: points, NextPrize: nextPrize}
+	p := &Player{Points: points, NextPrize: nextPrize, FirstTry: true}
 	return p
 }
 
@@ -63,6 +64,7 @@ func createPlayer(points int, nextPrize int) *Player {
 func (gs *GameState) resetPlayer(ip string) {
 	gs.Players[ip].Points = StartingPoints
 	gs.Players[ip].NextPrize = gs.NextPrize
+	gs.Players[ip].FirstTry = true
 }
 
 // Get amount of prize
@@ -93,6 +95,7 @@ func (gs *GameState) checkPrize(ip string) {
 // Update game state
 func (gs *GameState) update(ip string) {
 	gs.Clicks++
+	gs.Players[ip].FirstTry = false
 	gs.Players[ip].Points--
 	gs.checkPrize(ip)
 	gs.Players[ip].NextPrize = gs.NextPrize

@@ -36,7 +36,13 @@ function toggleAudio() {
 
 function updateState(data) {
 	this.points = data.points;
-	this.nextPrize = data.nextPrize;
+	this.firstTry = data.firstTry;
+	// Show clicks to next prize only if button is clicked
+	if (!this.firstTry)
+	{
+		this.nextPrize = data.nextPrize;
+	} else
+		this.nextPrize = '?';
 	this.isDisabled = false;
 }
 
@@ -94,9 +100,10 @@ function reset(e) {
 var app = new Vue({
   el: '#app',
   data: {
-    message: '',
+	message: '',
     nextPrize: '?',
-    isFetching: false,
+	isFetching: false,
+	firstTry: true,
 	isDisabled: false,
 	isAudio: true,
     points: 0,
