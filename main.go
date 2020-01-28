@@ -55,8 +55,8 @@ func createGameState() *GameState {
 }
 
 // Create new Player
-func createPlayer(points int, nextPrize int) *Player {
-	p := &Player{Points: points, NextPrize: nextPrize, FirstTry: true}
+func createPlayer(nextPrize int) *Player {
+	p := &Player{Points: StartingPoints, NextPrize: nextPrize, FirstTry: true}
 	return p
 }
 
@@ -119,8 +119,6 @@ func parseIP(addr string) string {
 // Get right ip according to ENV
 func (gs *GameState) getIP(r *http.Request) string {
 	var ip string
-	log.Println("UUUSUSUS", r)
-	log.Println("UUUSUSUS2", r.RemoteAddr)
 	if gs.Env != "production" {
 		ip = parseIP(r.RemoteAddr)
 	} else {

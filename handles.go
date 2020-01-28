@@ -24,7 +24,7 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 		// Player exist
 	} else {
 		// Add new player
-		p = createPlayer(StartingPoints, gs.NextPrize)
+		p = createPlayer(gs.NextPrize)
 		gs.Players[ip] = p
 	}
 	json.NewEncoder(w).Encode(gs.Players[ip])
@@ -35,10 +35,10 @@ func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(r)
 	if gs.Players[ip].Points == 0 {
 		json.NewEncoder(w).Encode(gs.Players[ip])
-	} else {
-		gs.update(ip)
-		json.NewEncoder(w).Encode(gs.Players[ip])
+		return
 	}
+	gs.update(ip)
+	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
 // Reset player's data
@@ -46,8 +46,6 @@ func (gs *GameState) handleReset(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(r)
 	if gs.Players[ip].Points == 0 {
 		gs.resetPlayer(ip)
-		json.NewEncoder(w).Encode(gs.Players[ip])
-	} else {
-		json.NewEncoder(w).Encode(gs.Players[ip])
 	}
+	json.NewEncoder(w).Encode(gs.Players[ip])
 }
