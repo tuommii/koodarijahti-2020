@@ -27,7 +27,7 @@ API:
 - /click
 	- Muuttaa pelin tilaa sekä palauttaa sen
 - /reset
-	- Plauttaa pelaajan arvot lähtötilanteeseen.
+	- Palauttaa pelaajan arvot lähtötilanteeseen.
 ```
 
 * **Ääniefektit** klikkaukselle, voitolle ja pelin loppumiselle.
