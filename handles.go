@@ -12,7 +12,7 @@ func (gs *GameState) logger(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		next(w, r)
 		ip = gs.getIP(r)
-		log.Println(r.URL, "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks)
+		log.Println(r.URL, "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks, "Players:", len(gs.Players))
 	}
 }
 
