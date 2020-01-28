@@ -53,9 +53,9 @@ function handleClick(e) {
 	if (this.points) {
 		this.isDisabled = true;
 		playClickAudio(this.isAudio);
-		// window.setTimeout(() => {
-		// 	this.isDisabled = false;
-		// }, DELAY);
+		window.setTimeout(() => {
+			this.isDisabled = false;
+		}, DELAY);
 		this.fetchData(CLICK);
 	}
 }
