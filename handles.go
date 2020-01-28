@@ -35,10 +35,10 @@ func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(r)
 	if gs.Players[ip].Points == 0 {
 		json.NewEncoder(w).Encode(gs.Players[ip])
-		return
+	} else {
+		gs.update(ip)
+		json.NewEncoder(w).Encode(gs.Players[ip])
 	}
-	gs.update(ip)
-	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
 // Reset player's data
@@ -47,7 +47,7 @@ func (gs *GameState) handleReset(w http.ResponseWriter, r *http.Request) {
 	if gs.Players[ip].Points == 0 {
 		gs.resetPlayer(ip)
 		json.NewEncoder(w).Encode(gs.Players[ip])
-		return
+	} else {
+		json.NewEncoder(w).Encode(gs.Players[ip])
 	}
-	json.NewEncoder(w).Encode(gs.Players[ip])
 }

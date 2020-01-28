@@ -3,7 +3,7 @@ const prizeAudio = document.getElementById('audio-prize');
 const clickAudio = document.getElementById('audio-click');
 const gameOverAudio = document.getElementById('audio-game-over');
 
-const DELAY = 200;
+const DELAY = 300;
 const CLICK = '/click';
 const STATE = '/state';
 const RESET = '/reset';
@@ -41,9 +41,9 @@ function updateState(data) {
 	if (!this.firstTry)
 	{
 		this.nextPrize = data.nextPrize;
-	} else
+	} else {
 		this.nextPrize = '?';
-	this.isDisabled = false;
+	}
 }
 
 function handleClick(e) {
@@ -60,7 +60,6 @@ function handleClick(e) {
 
 function fetchData(url) {
   const req = new Request(url);
-  this.isDisabled = true;
   fetch(req)
     .then((res) => {
       return res.json();
