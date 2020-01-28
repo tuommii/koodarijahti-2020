@@ -119,10 +119,9 @@ func parseIP(addr string) string {
 // Get right ip according to ENV
 func (gs *GameState) getIP(r *http.Request) string {
 	var ip string
+	ip = r.Header.Get("X-Forwarded-For")
 	if gs.Env != "production" {
 		ip = parseIP(r.RemoteAddr)
-	} else {
-		ip = r.Header.Get("X-Forwarded-For")
 	}
 	return ip
 }

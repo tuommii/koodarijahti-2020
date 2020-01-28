@@ -77,16 +77,19 @@ function fetchData(url, cb) {
 }
 
 function checkGameState(data, url) {
+	// GameOver
 	if (!data.points) {
 		if (url === CLICK) {
 			playGameOverAudio(this.isAudio);
 		}
 		this.message = `Game Over!`;
 	}
+	// Prize Won
 	if (data.points > this.points && url === CLICK) {
 		playPrizeAudio(this.isAudio);
 		this.message = `You won ${data.points - this.points + 1} points!`;
 	}
+	// No prize
 	else {
 		this.message = '';
 	}

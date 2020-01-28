@@ -30,7 +30,7 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
-// Update's game state
+// Updates game state
 func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(r)
 	if gs.Players[ip].Points == 0 {

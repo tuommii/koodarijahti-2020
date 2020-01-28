@@ -1,8 +1,8 @@
 # Koodarijahti 2020
 
-<img src="https://github.com/tuommii/vincit/blob/master/screenshot.png" width="300">
-
 Mielestäni [tehtävänanto](https://github.com/tuommii/vincit/blob/master/Tehtava.pdf) oli **erittäin hauska** ja **hyvin suunniteltu**, jatkuvasti teki mieli lisätä jokin uusi ominaisuus.
+
+<img src="https://github.com/tuommii/vincit/blob/master/screenshot.png" width="300">
 
 Projekti livenä: [Heroku app](https://multiplayer-button.herokuapp.com/) (27.11.2020)
 
@@ -27,22 +27,21 @@ API:
 - /click
 	- Muuttaa pelin tilaa sekä palauttaa sen
 - /reset
-	- Nollaa pelaajan arvot.
+	- Plauttaa pelaajan arvot lähtötilanteeseen.
 ```
 
-* Ääniefektit klikkaukselle, voitolle ja pelin loppumiselle.
+* **Ääniefektit** klikkaukselle, voitolle ja pelin loppumiselle.
 * Laskuri nollaantuu aina 500:n painalluksen jälkeen, jottei ikinä mennä integerin maksimiarvon yli.
 Tämä ei vaikuta palkintojenjakoon.
 * Pelaajat yksilöidään IP-osoitteella, joka toimii myös map-tyypin avaimena. Näin pelaajan tila säilyy, vaikka selain
 välissä suljettaisiinkin. En siis käyttänyt tietokantaa, vaikka MySQL ja MongoDB ovatkin tuttuja.
-* Herokun Hobby Dyno hoitaa muistin vapauttamisen
+* Herokun Hobby Dyno uudelleenkäynnistyy tietyin väliajoin, joten samalla se tulee hoitaneeksi muistin vapauttamisen ;)
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
 * Palvelin loggaa pyynnöt middleware-funktiolla
-* Painikkeelle on asetettu pieni viive ennen kuin sitä voi uudelleen klikata.
+* Painikkeelle on asetettu pieni viive klikkausten välille.
 * Jos ympäristömuuttujaa __PORT__ ei löydy, kuunnellaan porttia 3000.
-* Palvelinsovelluksen koodi on runsaasti kommentoitu, sillä jos päätän muuttaa funktioiden näkyvyyttä
-go:n kääntäjä herjaa.
-* Ääniasetusta ei tallenneta, joten se palautuu sivunlatauksen jälkeen.
+* Palvelinsovelluksen koodi on runsaasti kommentoitua ainoastaan gofmt:n vuoksi.
+* Ääniasetusta ei tallenneta, joten se palautuu sivulatauksen jälkeen.
 
 ## Kokeile itse
 Go tulee olla asennettuna. Kloonaa repo ja suorita **hakemiston juuressa**:
