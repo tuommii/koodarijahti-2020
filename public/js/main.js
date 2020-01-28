@@ -42,7 +42,10 @@ function updateState(data) {
 	} else {
 		this.nextPrize = '?';
 	}
-	this.isDisabled = false;
+	if (this.points === 0)
+		this.isDisabled = true;
+	else
+		this.isDisabled = false;
 }
 
 function handleClick(e) {
@@ -50,9 +53,9 @@ function handleClick(e) {
 	if (this.points) {
 		this.isDisabled = true;
 		playClickAudio(this.isAudio);
-		window.setTimeout(() => {
-			this.isDisabled = false;
-		}, DELAY);
+		// window.setTimeout(() => {
+		// 	this.isDisabled = false;
+		// }, DELAY);
 		this.fetchData(CLICK);
 	}
 }
