@@ -35,13 +35,11 @@ input[type="button"]:active {
 *:focus {
     outline: 0 !important;
 }
-.message {
-	padding: 0.5rem;
-	color: #222;
-	width: 200px;
-	/* color: #e2d283; */
+
+h1.title {
+	color: #fff;
 }
 
-p.message {
-	min-height: 2.5rem;
+.messages {
+	min-height: 3rem;
 }

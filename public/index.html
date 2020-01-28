@@ -23,13 +23,15 @@
 
 	<!-- APP -->
 	<section id="app" class="section hero is-fullheight">
+		<div class="hero-head messages">
+			<div class="container has-text-centered">
+				<h1 class="title">{{message}}</h1>
+			</div>
+		</div>
 		<div class="hero-body">
 			<!-- <div v-if="started" class="container"> -->
-			<div class="container">
+			<div class="container has-text-centered">
 				<div class="columns is-multiline">
-					<div class="column is-4 is-full-mobile is-offset-4">
-						<p class="message">{{message}}</p>
-					</div>
 					<div class="column is-4 is-full-mobile is-offset-4">
 						<span>Points: {{points}}</span>
 					</div>
