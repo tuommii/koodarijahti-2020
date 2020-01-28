@@ -36,33 +36,33 @@ function toggleAudio() {
 function updateState(data) {
 	this.points = data.points;
 	this.firstTry = data.firstTry;
-	// Show clicks to next prize only if button is clicked
+	// Show clicks to next prize only if button has been clicked
+	this.nextPrize = '?';
 	if (!this.firstTry) {
 		this.nextPrize = data.nextPrize;
-	} else {
-		this.nextPrize = '?';
 	}
-	if (this.points === 0)
-		this.isDisabled = true;
-	else
-		this.isDisabled = false;
+	if (!this.points) {
+		this.isClickDisabled = true;
+	} else {
+		// this.isClickDisabled = false;
+		setTimeout(() => {
+			this.isClickDisabled = false;
+			}, DELAY);
+	}
 }
 
 function handleClick(e) {
 	e.preventDefault();
 	if (this.points) {
-		this.isDisabled = true;
+		this.isClickDisabled = true;
 		playClickAudio(this.isAudio);
-		window.setTimeout(() => {
-			this.isDisabled = false;
-		}, DELAY);
 		this.fetchData(CLICK);
 	}
 }
 
-function fetchData(url) {
+function fetchData(url, cb) {
 	if (url === CLICK)
-		this.isDisabled = true;
+		this.isClickDisabled = true;
 	const req = new Request(url);
 	fetch(req)
 		.then((res) => {
@@ -120,7 +120,7 @@ var app = new Vue({
 		message: '',
 		nextPrize: '?',
 		firstTry: true,
-		isDisabled: false,
+		isClickDisabled: false,
 		isAudio: true,
 		points: 0,
 	},

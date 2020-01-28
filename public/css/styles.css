@@ -23,6 +23,11 @@ input.button, .button {
     /* box-shadow: 0 10px 40px -4px rgba(0, 0, 0, 0.8); */
 }
 
+button[disabled=disabled], button:disabled {
+	border: 0;
+	outline: 0;
+}
+
 .column span {
 	font-size: 1rem;
 }
@@ -33,9 +38,9 @@ input[type="button"]:active {
 	border: none !important;
 	box-shadow: none !important;
 }
-*:focus {
+/* *:focus {
     outline: 0 !important;
-}
+} */
 
 h1.title {
 	color: #fff;
@@ -64,6 +69,10 @@ div.hidden {
 
 div.show {
 	visibility: visible;
+}
+
+a, a:visited {
+	color: #285cb0;
 }
 
 a:hover {

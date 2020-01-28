@@ -44,8 +44,7 @@
 						<div><span class="label">Clicks to Prize:</span><span class="info">{{nextPrize}}</span></div>
 					</div>
 					<div class="column is-4 is-full-mobile is-offset-4">
-						<!-- <button class="button" v-on:click="handleClick" type="button" :disabled="isDisabled">Click</button> -->
-						<button class="button" v-on:click="handleClick" type="button">Click</button>
+						<button class="button" v-on:click="handleClick" type="button" :disabled="isClickDisabled">Click</button>
 					</div>
 					<div class="column is-4 is-full-mobile is-offset-4" v-bind:class="{ hidden: points > 0 }">
 						<button class="button" v-on:click="reset" type="button">Reset</button>
