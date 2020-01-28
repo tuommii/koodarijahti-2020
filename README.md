@@ -36,7 +36,7 @@ välissä suljettaisiinkin. En siis käyttänyt tietokantaa, vaikka MySQL ja Mon
 Tämä ei vaikuta palkintojenjakoon.
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
 * **Ääniefektit** klikkaukselle, voitolle ja pelin loppumiselle.
-* Herokun Hobby Dyno uudelleenkäynnistyy tietyin väliajoin, joten samalla se tulee hoitaneeksi muistin vapauttamisen ;)
+* Herokun Hobby Dyno uudelleenkäynnistyy tietyin väliajoin, joten samalla se tulee hoitaneeksi muistin vapauttamisen
 * Palvelin loggaa pyynnöt middleware-funktiolla
 * Painikkeelle on asetettu pieni viive klikkausten välille.
 * Ääniasetusta ei tallenneta, joten se palautuu sivulatauksen jälkeen.
