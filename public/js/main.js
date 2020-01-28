@@ -39,16 +39,17 @@ function updateState(data) {
 	this.points = data.points;
 	this.nextPrize = data.nextPrize;
 	this.isFetching = false;
+	this.isDisabled = false;
 }
 
 function handleClick(e) {
   e.preventDefault();
   if (this.points) {
+	this.isDisabled = true;
     playClickAudio(this.isAudio);
-    this.isDisabled = true;
-    window.setTimeout(() => {
-      this.isDisabled = false;
-    }, DELAY);
+    // window.setTimeout(() => {
+    //   this.isDisabled = false;
+    // }, DELAY);
     this.fetchData(CLICK)
   }
 }
@@ -56,6 +57,7 @@ function handleClick(e) {
 function fetchData(url) {
   const req = new Request(url);
   this.isFetching = true;
+  this.isDisabled = true;
   fetch(req)
     .then((res) => {
       return res.json();

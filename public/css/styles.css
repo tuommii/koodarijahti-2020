@@ -60,9 +60,12 @@ span.label {
 
 div.hidden {
 	visibility: hidden;
-	/* display: hidden; */
 }
 
 div.show {
 	visibility: visible;
+}
+
+a:hover {
+	color: #ffe69e;
 }
