@@ -15,7 +15,7 @@ Selain-puolella tehtävänannossa toivottiin käytettävän jotain nykyaikaista 
 tehdä kaikki itse ja käytin **Vue.js**-kirjastoa, jota olin kokeillut jo joskus ennen 1.0-versiota
 (omasi jo silloin hyvän dokumentaation).
 
-## Muutama huomio koodista
+## Muutama huomio
 Siltä varalta, ettei koodini olekaan niin helposti luettavaa kuin toivon 😉
 
 API:
@@ -28,14 +28,18 @@ API:
 	- Nollaa pelaajan arvot.
 ```
 
+* Ääniefektit klikkaukselle, voitolle ja pelin loppumiselle.
 * Laskuri nollaantuu aina 500:n painalluksen jälkeen, jottei ikinä mennä integerin maksimiarvon yli.
 Tämä ei vaikuta palkintojenjakoon.
 * Pelaajat yksilöidään IP-osoitteella, joka toimii myös map-tyypin avaimena. Näin pelaajan tila säilyy, vaikka selain
 välissä suljettaisiinkin. En siis käyttänyt tietokantaa, vaikka MySQL ja MongoDB ovatkin tuttuja.
+* Herokun Hobby Dyno hoitaa muistin vapauttamisen
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
 * Palvelin loggaa pyynnöt middleware-funktiolla
 * Painikkeelle on asetettu pieni viive ennen kuin sitä voi uudelleen klikata.
 * Jos ympäristömuuttujaa __PORT__ ei löydy, kuunnellaan porttia 3000.
+* Palvelinsovelluksen koodi on runsaasti kommentoitu, sillä jos päätän muuttaa funktioiden näkyvyyttä
+go:n kääntäjä herjaa.
 
 ## Kokeile itse
 Go tulee olla asennettuna. Kloonaa repo ja suorita **hakemiston juuressa**:

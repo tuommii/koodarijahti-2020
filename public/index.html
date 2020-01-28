@@ -23,11 +23,16 @@
 
 	<!-- APP -->
 	<section id="app" class="section hero is-fullheight">
+
+		<!-- HEADER -->
 		<div class="hero-head messages">
 			<div class="container has-text-centered">
 				<h1 class="title">{{message}}</h1>
 			</div>
 		</div>
+		<!-- END OF /HEADER -->
+
+		<!-- BODY -->
 		<div class="hero-body">
 			<!-- <div v-if="started" class="container"> -->
 			<div class="container has-text-centered">
@@ -36,7 +41,7 @@
 						<div><span class="label">Points:</span><span class="info">{{points}}</span></div>
 					</div>
 					<div class="column is-4 is-full-mobile is-offset-4">
-						<div><span class="label">Next Prize:</span><span class="info">{{nextPrize}}</span></div>
+						<div><span class="label">Clicks to Prize:</span><span class="info">{{nextPrize}}</span></div>
 					</div>
 					<div class="column is-4 is-full-mobile is-offset-4">
 						<button class="button" v-on:click="handleClick" type="button" :disabled="isDisabled || !points">Click</button>
@@ -47,11 +52,15 @@
 				</div>
 			</div>
 		</div>
-	</section>
-	<!-- END OF APP -->
 
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+		<div class="hero-footer">
+			<p>dlskdsl;ds</p>
+		</div>
+		<!-- END OF /BODY -->
+	</section>
+
+	<!-- END OF APP -->
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>
