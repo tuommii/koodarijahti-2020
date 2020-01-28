@@ -74,14 +74,28 @@ function fetchData(url) {
 		});
 }
 
-function showMessage(data, url) {
+function checkGameOver(data, url)
+{
 	if (!data.points) {
 		if (url === CLICK) {
-			playGameOverAudio(this.isAudio)
+			playGameOverAudio(this.isAudio);
 		}
 		this.message = `Game Over!`;
+		return true;
 	}
-	else if (data.points > this.points && url === CLICK) {
+	return false;
+}
+
+function showMessage(data, url) {
+	// if (!data.points) {
+	// 	if (url === CLICK) {
+	// 		playGameOverAudio(this.isAudio)
+	// 	}
+	// 	this.message = `Game Over!`;
+	// }
+	if (checkGameOver(data, url))
+		return ;
+	if (data.points > this.points && url === CLICK) {
 		playPrizeAudio(this.isAudio);
 		this.message = `You won ${data.points - this.points + 1} points!`;
 	}
