@@ -3,7 +3,6 @@ const prizeAudio = document.getElementById('audio-prize');
 const clickAudio = document.getElementById('audio-click');
 const gameOverAudio = document.getElementById('audio-game-over');
 
-// const 0 = 20;
 const DELAY = 200;
 const CLICK = '/click';
 const STATE = '/state';
@@ -38,7 +37,6 @@ function toggleAudio() {
 function updateState(data) {
 	this.points = data.points;
 	this.nextPrize = data.nextPrize;
-	this.isFetching = false;
 	this.isDisabled = false;
 }
 
@@ -47,16 +45,15 @@ function handleClick(e) {
   if (this.points) {
 	this.isDisabled = true;
     playClickAudio(this.isAudio);
-    // window.setTimeout(() => {
-    //   this.isDisabled = false;
-    // }, DELAY);
-    this.fetchData(CLICK)
+    window.setTimeout(() => {
+      this.isDisabled = false;
+    }, DELAY);
+    this.fetchData(CLICK);
   }
 }
 
 function fetchData(url) {
   const req = new Request(url);
-  this.isFetching = true;
   this.isDisabled = true;
   fetch(req)
     .then((res) => {
