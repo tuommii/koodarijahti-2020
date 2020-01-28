@@ -5,6 +5,9 @@ const gameOverAudio = document.getElementById('audio-game-over');
 
 // const 0 = 20;
 const DELAY = 200;
+const CLICK = '/click';
+const STATE = '/state';
+const RESET = '/reset';
 
 function handleClick(e) {
   e.preventDefault();
@@ -15,7 +18,7 @@ function handleClick(e) {
     window.setTimeout(() => {
       this.isDisabled = false;
     }, DELAY);
-    this.fetchData('/click')
+    this.fetchData(CLICK)
   }
 }
 
@@ -39,13 +42,13 @@ function fetchData(url) {
 
 function showMessage(data, url) {
   if (!data.points) {
-    if (url === "/click") {
+    if (url === CLICK) {
       gameOverAudio.currentTime = 0;
       gameOverAudio.play();
     }
     this.message = `Game Over!`;
   }
-  else if (data.points > this.points && url === "/click") {
+  else if (data.points > this.points && url === CLICK) {
       prizeAudio.currentTime = 0;
       prizeAudio.play();
       this.message = `You won ${data.points - this.points + 1} points!`;
@@ -57,7 +60,7 @@ function showMessage(data, url) {
 
 function reset(e) {
   e.preventDefault();
-  this.fetchData('/reset');
+  this.fetchData(RESET);
 }
 
 

@@ -27,7 +27,6 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 		p = createPlayer(StartingPoints, gs.NextPrize)
 		gs.Players[ip] = p
 	}
-	// log.Println("/STATE", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks, len(gs.Players))
 	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
@@ -39,7 +38,6 @@ func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	gs.update(ip)
-	// log.Println("/CLICK\t", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks)
 	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
@@ -47,11 +45,9 @@ func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 func (gs *GameState) handleReset(w http.ResponseWriter, r *http.Request) {
 	ip := gs.getIP(r)
 	if gs.Players[ip].Points == 0 {
-		gs.Players[ip].Points = StartingPoints
-		gs.Players[ip].NextPrize = gs.NextPrize
+		gs.resetPlayer(ip)
 		json.NewEncoder(w).Encode(gs.Players[ip])
 		return
 	}
-	// log.Println("/RESET\t", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks)
 	json.NewEncoder(w).Encode(gs.Players[ip])
 }

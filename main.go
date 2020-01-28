@@ -59,6 +59,12 @@ func createPlayer(points int, nextPrize int) *Player {
 	return p
 }
 
+// Reset player's data
+func (gs *GameState) resetPlayer(ip string) {
+	gs.Players[ip].Points = StartingPoints
+	gs.Players[ip].NextPrize = gs.NextPrize
+}
+
 // Get amount of prize
 func (gs *GameState) getPrize() int {
 	if gs.Clicks%PrizeBigClicks == 0 {
