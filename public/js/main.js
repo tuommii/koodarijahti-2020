@@ -3,7 +3,7 @@ const prizeAudio = document.getElementById('audio-prize');
 const clickAudio = document.getElementById('audio-click');
 const gameOverAudio = document.getElementById('audio-game-over');
 
-const DELAY = 200;
+const DELAY = 50;
 const CLICK = '/click';
 const STATE = '/state';
 const RESET = '/reset';
@@ -44,10 +44,9 @@ function updateState(data) {
 	if (!this.points) {
 		this.isClickDisabled = true;
 	} else {
-		// this.isClickDisabled = false;
 		setTimeout(() => {
 			this.isClickDisabled = false;
-			}, DELAY);
+		}, DELAY);
 	}
 }
 
@@ -77,27 +76,13 @@ function fetchData(url, cb) {
 		});
 }
 
-function checkGameOver(data, url)
-{
+function checkGameState(data, url) {
 	if (!data.points) {
 		if (url === CLICK) {
 			playGameOverAudio(this.isAudio);
 		}
 		this.message = `Game Over!`;
-		return true;
 	}
-	return false;
-}
-
-function checkGameState(data, url) {
-	// if (!data.points) {
-	// 	if (url === CLICK) {
-	// 		playGameOverAudio(this.isAudio)
-	// 	}
-	// 	this.message = `Game Over!`;
-	// }
-	if (checkGameOver(data, url))
-		return ;
 	if (data.points > this.points && url === CLICK) {
 		playPrizeAudio(this.isAudio);
 		this.message = `You won ${data.points - this.points + 1} points!`;
