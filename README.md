@@ -1,6 +1,6 @@
 # Koodarijahti 2020
 
-Mielestäni [tehtävänanto](https://github.com/tuommii/vincit/blob/master/Tehtava.pdf) oli **erittäin hauska** ja **hyvin suunniteltu**, jatkuvasti teki mieli lisätä jokin uusi ominaisuus.
+Mielestäni [tehtävänanto](https://github.com/tuommii/vincit/blob/master/Tehtava.pdf) oli **erittäin hauska** ja **hyvin suunniteltu**. Jatkuvasti teki mieli lisätä jokin uusi ominaisuus.
 
 <img src="https://github.com/tuommii/vincit/blob/master/screenshot.png" width="300">
 
