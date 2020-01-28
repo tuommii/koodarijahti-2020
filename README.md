@@ -30,18 +30,18 @@ API:
 	- Palauttaa pelaajan arvot lähtötilanteeseen.
 ```
 
-* **Ääniefektit** klikkaukselle, voitolle ja pelin loppumiselle.
-* Laskuri nollaantuu aina 500:n painalluksen jälkeen, jottei ikinä mennä integerin maksimiarvon yli.
-Tämä ei vaikuta palkintojenjakoon.
 * Pelaajat yksilöidään IP-osoitteella, joka toimii myös map-tyypin avaimena. Näin pelaajan tila säilyy, vaikka selain
 välissä suljettaisiinkin. En siis käyttänyt tietokantaa, vaikka MySQL ja MongoDB ovatkin tuttuja.
-* Herokun Hobby Dyno uudelleenkäynnistyy tietyin väliajoin, joten samalla se tulee hoitaneeksi muistin vapauttamisen ;)
+* Laskuri nollaantuu aina 500:n painalluksen jälkeen, jottei ikinä mennä integerin maksimiarvon yli.
+Tämä ei vaikuta palkintojenjakoon.
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
+* **Ääniefektit** klikkaukselle, voitolle ja pelin loppumiselle.
+* Herokun Hobby Dyno uudelleenkäynnistyy tietyin väliajoin, joten samalla se tulee hoitaneeksi muistin vapauttamisen ;)
 * Palvelin loggaa pyynnöt middleware-funktiolla
 * Painikkeelle on asetettu pieni viive klikkausten välille.
-* Jos ympäristömuuttujaa __PORT__ ei löydy, kuunnellaan porttia 3000.
-* Palvelinsovelluksen koodi on runsaasti kommentoitua ainoastaan gofmt:n vuoksi.
 * Ääniasetusta ei tallenneta, joten se palautuu sivulatauksen jälkeen.
+* Palvelinsovelluksen koodi on runsaasti kommentoitua ainoastaan gofmt:n vuoksi.
+* Jos ympäristömuuttujaa __PORT__ ei löydy, kuunnellaan porttia 3000.
 
 ## Kokeile itse
 Go tulee olla asennettuna. Kloonaa repo ja suorita **hakemiston juuressa**:
