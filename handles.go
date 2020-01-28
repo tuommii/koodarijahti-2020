@@ -6,6 +6,16 @@ import (
 	"net/http"
 )
 
+// Middleware logger, called with every request
+func (gs *GameState) logger(next http.HandlerFunc) http.HandlerFunc {
+	var ip string
+	return func(w http.ResponseWriter, r *http.Request) {
+		next(w, r)
+		ip = gs.getIP(r)
+		log.Println(r.URL, "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks)
+	}
+}
+
 // handleGetState returns current state
 func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 	var p *Player
@@ -17,7 +27,7 @@ func (gs *GameState) handleGetState(w http.ResponseWriter, r *http.Request) {
 		p = createPlayer(StartingPoints, gs.NextPrize)
 		gs.Players[ip] = p
 	}
-	log.Println("/STATE", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks, len(gs.Players))
+	// log.Println("/STATE", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks, len(gs.Players))
 	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
@@ -29,7 +39,7 @@ func (gs *GameState) handleClick(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	gs.update(ip)
-	log.Println("/CLICK\t", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks)
+	// log.Println("/CLICK\t", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks)
 	json.NewEncoder(w).Encode(gs.Players[ip])
 }
 
@@ -42,6 +52,6 @@ func (gs *GameState) handleReset(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(gs.Players[ip])
 		return
 	}
-	log.Println("/RESET\t", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks)
+	// log.Println("/RESET\t", "IP:", ip, "Player:", gs.Players[ip], "Clicks:", gs.Clicks)
 	json.NewEncoder(w).Encode(gs.Players[ip])
 }

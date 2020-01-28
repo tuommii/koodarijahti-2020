@@ -16,7 +16,7 @@ tehdä kaikki itse ja käytin **Vue.js**-kirjastoa, jota olin kokeillut jo josku
 (omasi jo silloin hyvän dokumentaation).
 
 ## Muutama huomio koodista
-Siltä varalta, ettei koodini olekaan niin helposti luettavaa kuin toivon:
+Siltä varalta, ettei koodini olekaan niin helposti luettavaa kuin toivon 😉
 
 API:
 ```markdown
@@ -33,6 +33,7 @@ Tämä ei vaikuta palkintojenjakoon.
 * Pelaajat yksilöidään IP-osoitteella, joka toimii myös map-tyypin avaimena. Näin pelaajan tila säilyy, vaikka selain
 välissä suljettaisiinkin. En siis käyttänyt tietokantaa, vaikka MySQL ja MongoDB ovatkin tuttuja.
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
+* Palvelin loggaa pyynnöt middleware-funktiolla
 * Painikkeelle on asetettu pieni viive ennen kuin sitä voi uudelleen klikata.
 * Jos ympäristömuuttujaa __PORT__ ei löydy, kuunnellaan porttia 3000.
 

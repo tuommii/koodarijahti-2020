@@ -50,7 +50,6 @@ func createGameState() *GameState {
 	} else {
 		gs.Env = "production"
 	}
-
 	return gs
 }
 
@@ -122,9 +121,9 @@ func (gs *GameState) getIP(r *http.Request) string {
 func main() {
 	state := createGameState()
 	fs := http.FileServer(http.Dir("./public"))
-	http.HandleFunc("/click", state.handleClick)
-	http.HandleFunc("/state", state.handleGetState)
-	http.HandleFunc("/reset", state.handleReset)
+	http.HandleFunc("/click", state.logger(state.handleClick))
+	http.HandleFunc("/state", state.logger(state.handleGetState))
+	http.HandleFunc("/reset", state.logger(state.handleReset))
 	http.Handle("/", fs)
 	log.Println("Server started on", state.Env)
 	err := http.ListenAndServe("0.0.0.0:"+state.Port, nil)
