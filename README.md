@@ -31,7 +31,7 @@ API:
 * Laskuri nollaantuu aina 500:n painalluksen jälkeen, jottei ikinä mennä integerin maksimiarvon yli.
 Tämä ei vaikuta palkintojenjakoon.
 * Pelaajat yksilöidään IP-osoitteella, joka toimii myös map-tyypin avaimena. Näin pelaajan tila säilyy, vaikka selain
-välissä suljettaisiinkin.
+välissä suljettaisiinkin. En siis käyttänyt tietokantaa, vaikka MySQL ja MongoDB ovatkin tuttuja.
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
 * Painikkeelle on asetettu pieni viive ennen kuin sitä voi uudelleen klikata.
 * Jos ympäristömuuttujaa __PORT__ ei löydy, kuunnellaan porttia 3000.
