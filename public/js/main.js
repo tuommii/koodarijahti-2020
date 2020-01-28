@@ -69,7 +69,7 @@ function fetchData(url) {
 			if (data === undefined)
 				return;
 			console.log(data);
-			this.showMessage(data, url);
+			this.checkGameState(data, url);
 			this.updateState(data);
 		});
 }
@@ -86,7 +86,7 @@ function checkGameOver(data, url)
 	return false;
 }
 
-function showMessage(data, url) {
+function checkGameState(data, url) {
 	// if (!data.points) {
 	// 	if (url === CLICK) {
 	// 		playGameOverAudio(this.isAudio)
@@ -124,7 +124,7 @@ var app = new Vue({
 	methods: {
 		fetchData: fetchData,
 		handleClick: handleClick,
-		showMessage: showMessage,
+		checkGameState: checkGameState,
 		updateState: updateState,
 		toggleAudio: toggleAudio,
 		reset: reset
