@@ -3,12 +3,10 @@ const prizeAudio = document.getElementById('audio-prize');
 const clickAudio = document.getElementById('audio-click');
 const gameOverAudio = document.getElementById('audio-game-over');
 
-// const 0 = 20;
 const DELAY = 200;
 const CLICK = '/click';
 const STATE = '/state';
 const RESET = '/reset';
-
 
 function playClickAudio(enabled) {
 	if (enabled) {
@@ -85,13 +83,35 @@ function showMessage(data, url) {
   }
 }
 
-function reset(e) {
-  e.preventDefault();
-  this.fetchData(RESET);
+function checkGameState(data, url, self) {
+	if (checkGameOver(data, url, self))
+		return;
+	self.message = checkPrizeWon(data, url, self.points);
 }
 
+function fetchData(url) {
+	const req = new Request(url);
+	this.isFetching = true;
+	fetch(req)
+		.then((res) => {
+			return res.json();
+		})
+		.then((data) => {
+			if (data === undefined)
+				return;
+			this.checkGameState(data, url, this);
+			this.updateState(data);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
 
-// TODO: timeout for button, reset counter when >=
+function reset(e) {
+	e.preventDefault();
+	this.fetchData(RESET);
+}
+
 var app = new Vue({
   el: '#app',
   data: {
