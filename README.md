@@ -1,5 +1,7 @@
 # Koodarijahti 2020
 
+<img src="https://github.com/tuommii/ft_ls/blob/master/ft_ls.png" width="300">
+
 Mielestäni tehtävänanto oli **erittäin hauska** ja **hyvin suunniteltu**, jatkuvasti teki mieli lisätä jokin uusi ominaisuus.
 
 Projekti livenä: [Heroku app](https://multiplayer-button.herokuapp.com/) (27.11.2020)
