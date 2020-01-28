@@ -3,7 +3,7 @@ const prizeAudio = document.getElementById('audio-prize');
 const clickAudio = document.getElementById('audio-click');
 const gameOverAudio = document.getElementById('audio-game-over');
 
-const DELAY = 300;
+const DELAY = 200;
 const CLICK = '/click';
 const STATE = '/state';
 const RESET = '/reset';
@@ -44,6 +44,7 @@ function updateState(data) {
 	} else {
 		this.nextPrize = '?';
 	}
+	this.isDisabled = false;
 }
 
 function handleClick(e) {
@@ -59,6 +60,8 @@ function handleClick(e) {
 }
 
 function fetchData(url) {
+ if (url === CLICK)
+	this.isDisabled = true;
   const req = new Request(url);
   fetch(req)
     .then((res) => {
@@ -101,7 +104,7 @@ var app = new Vue({
   data: {
 	message: '',
     nextPrize: '?',
-	isFetching: false,
+	// isFetching: false,
 	firstTry: true,
 	isDisabled: false,
 	isAudio: true,
