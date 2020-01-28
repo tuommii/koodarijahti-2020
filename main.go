@@ -38,7 +38,7 @@ const (
 )
 
 // StartingPoints for player
-const StartingPoints = 20
+const StartingPoints = 2
 
 // Create new State
 func createGameState() *GameState {

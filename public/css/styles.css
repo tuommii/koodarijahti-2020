@@ -8,7 +8,8 @@ body {
 }
 input.button, .button {
     color: #fff !important;
-    border: 1px solid rgba(0, 0, 0, 0.7);
+	border: 1px solid rgba(0, 0, 0, 0.7);
+	font-weight: 600;
     border-radius: 4px;
     background: #0073e8;
     background: linear-gradient(135deg, #00bec7, #0073e8);
@@ -41,5 +42,27 @@ h1.title {
 }
 
 .messages {
+	overflow: hidden;
 	min-height: 3rem;
+}
+
+span.info {
+	font-size: 2.5rem;
+	font-weight: 900;
+}
+
+span.label {
+	font-size: 1rem;
+	color: #ffe69e;
+	font-weight: normal;
+	text-transform: uppercase;
+}
+
+div.hidden {
+	visibility: hidden;
+	/* display: hidden; */
+}
+
+div.show {
+	visibility: visible;
 }

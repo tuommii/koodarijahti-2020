@@ -3,7 +3,7 @@ const prizeAudio = document.getElementById('audio-prize');
 const clickAudio = document.getElementById('audio-click');
 const gameOverAudio = document.getElementById('audio-game-over');
 
-const STARTING_POINTS = 20;
+// const 0 = 20;
 const DELAY = 200;
 
 function handleClick(e) {
@@ -69,7 +69,7 @@ var app = new Vue({
     nextPrize: '?',
     isFetching: false,
     isDisabled: false,
-    points: STARTING_POINTS,
+    points: 0,
   },
   methods: {
     fetchData: fetchData,
