@@ -1,6 +1,6 @@
 # Koodarijahti 2020
 
-Mielestäni [tehtävänanto](https://github.com/tuommii/vincit/blob/master/Tehtava.pdf) oli **erittäin hauska** ja **hyvin suunniteltu**. Jatkuvasti teki mieli lisätä jokin uusi ominaisuus.
+Mielestäni [tehtävänanto](https://github.com/tuommii/vincit/blob/master/Tehtava.pdf) oli **erittäin hauska** ja hyvin suunniteltu.
 
 <img src="https://github.com/tuommii/vincit/blob/master/screenshot.png" width="300">
 
@@ -36,7 +36,7 @@ välissä suljettaisiinkin. En siis käyttänyt tietokantaa, vaikka MySQL ja Mon
 Tämä ei vaikuta palkintojenjakoon.
 * Ainoastaan joka kymmenes painallus voi sisältää palkinnon, turha tarkistaa joka kerta.
 * **Ääniefektit** klikkaukselle, voitolle ja pelin loppumiselle.
-* Herokun Hobby Dyno uudelleenkäynnistyy tietyin väliajoin, joten samalla se tulee hoitaneeksi muistin vapauttamisen
+* Herokun Free Dyno uudelleenkäynnistyy tietyin väliajoin, joten samalla se tulee hoitaneeksi muistin vapauttamisen
 * Palvelin loggaa pyynnöt middleware-funktiolla
 * Painikkeelle on asetettu pieni viive klikkausten välille.
 * Ääniasetusta ei tallenneta, joten se palautuu sivulatauksen jälkeen.
