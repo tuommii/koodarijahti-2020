@@ -1,6 +1,6 @@
 # Koodarijahti 2020
 
-https://github.com/tuommii/vincit/blob/master/screenshot.png
+<img src="https://github.com/tuommii/vincit/blob/master/screenshot.png" width="300">
 
 Mielestäni tehtävänanto oli **erittäin hauska** ja **hyvin suunniteltu**, jatkuvasti teki mieli lisätä jokin uusi ominaisuus.
 
