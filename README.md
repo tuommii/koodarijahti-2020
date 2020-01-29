@@ -52,8 +52,8 @@ Go tulee olla asennettuna. Kloonaa repo ja suorita **hakemiston juuressa**:
 
 Avaa selaimessa [http://localhost:3000/](http://localhost:3000/)
 
-## Suorita testi(t)
+## Testaa
 
-Suorita **hakemiston juuressa**:
+Suorita hakemiston juuressa:
 
 ```go test```
