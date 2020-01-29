@@ -51,3 +51,9 @@ Go tulee olla asennettuna. Kloonaa repo ja suorita **hakemiston juuressa**:
 ```./server```
 
 Avaa selaimessa [http://localhost:3000/](http://localhost:3000/)
+
+## Suorita testi(t)
+
+Suorita **hakemiston juuressa**:
+
+```go test```
