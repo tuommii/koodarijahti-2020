@@ -4,7 +4,7 @@ Mielestäni [tehtävänanto](https://github.com/tuommii/vincit/blob/master/Tehta
 
 <img src="https://github.com/tuommii/vincit/blob/master/screenshot.png" width="300">
 
-Projekti livenä: [Heroku app](https://multiplayer-button.herokuapp.com/) (27.11.2020)
+Projekti livenä: [Heroku app](https://multiplayer-button.herokuapp.com/) (27.1.2020)
 
 ## Ratkaisuni
 
